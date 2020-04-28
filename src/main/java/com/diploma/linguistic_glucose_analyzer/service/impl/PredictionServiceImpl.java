@@ -44,7 +44,7 @@ public class PredictionServiceImpl implements PredictionService {
                 for (int i = 0; i <= lengthDifference; i++) {
                     String checkedPiece = linguisticChain.substring(i, i + prediction.getLinguisticChain().length());
                     if (prediction.getLinguisticChain().equals(checkedPiece)) {
-                        log.debug("Prediction matched: result = {}, chain = {}", prediction.getPossibleResult(), prediction.getLinguisticChain());
+//                        log.trace("Prediction matched: result = {}, chain = {}", prediction.getPossibleResult(), prediction.getLinguisticChain());
                         matchedPredictions.add(prediction);
                     }
                 }

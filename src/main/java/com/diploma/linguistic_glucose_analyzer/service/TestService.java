@@ -3,6 +3,8 @@ package com.diploma.linguistic_glucose_analyzer.service;
 import com.diploma.linguistic_glucose_analyzer.dao.GlucoseFileDAO;
 import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataRecord;
 import com.diploma.linguistic_glucose_analyzer.model.Prediction;
+import com.diploma.linguistic_glucose_analyzer.service.filter.RecordFilter;
+import com.diploma.linguistic_glucose_analyzer.service.filter.provider.FiltersProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,36 +24,50 @@ public class TestService {
 
     private GlucoseFileDAO glucoseFileDAO;
 
+    private FiltersProvider filterProvider;
+
     private static final String fileBaseName = "Diabetes-Data/data-";
 
     @Autowired
-    public TestService(GlucoseService glucoseService, PredictionService predictionService, LinguisticChainService linguisticChainService, BadGlucoseFinderService badGlucoseFinderService, GlucoseFileDAO glucoseFileDAO) {
+    public TestService(GlucoseService glucoseService, PredictionService predictionService, LinguisticChainService linguisticChainService, BadGlucoseFinderService badGlucoseFinderService, GlucoseFileDAO glucoseFileDAO, FiltersProvider filterProvider) {
         this.glucoseService = glucoseService;
         this.predictionService = predictionService;
         this.linguisticChainService = linguisticChainService;
         this.badGlucoseFinderService = badGlucoseFinderService;
         this.glucoseFileDAO = glucoseFileDAO;
+        this.filterProvider = filterProvider;
     }
 
-    //TODO make critacl pvalues finder
     public void test(int predictionLength, int bufferLength) {
         List<Prediction> badGlucosePredictions = new ArrayList<>();
 
+        int lessThanPersons = 0;
+
         for (int i = 1; i <= 60; i++) {
             List<GlucoseDataRecord> records = glucoseFileDAO.getRecords(fileBaseName + getFileNumber(i));
-            List<GlucoseDataRecord> glucoseMeasures = glucoseService.getGlucoseMeasures(records);
-            String glucoseMeasuresChain = linguisticChainService.getChain(glucoseMeasures, USED_ALPHABET);
-            badGlucosePredictions.addAll(badGlucoseFinderService
-                    .findBadGlucose(glucoseMeasuresChain, predictionLength, bufferLength, i));
+
+            for (RecordFilter filter : filterProvider.getFilters()) {
+                records = filter.filter(records);
+            }
+
+            String glucoseMeasuresChain = linguisticChainService.getChain(records, USED_ALPHABET);
+
+            if ("".equals(glucoseMeasuresChain)) {
+                log.debug("LESS THEN 4 MES/DAY for {} file", i);
+                lessThanPersons++;
+            } else {
+                badGlucosePredictions.addAll(badGlucoseFinderService
+                        .findBadGlucose(glucoseMeasuresChain, predictionLength, bufferLength, i));
+            }
         }
+        log.debug("Less then persons: {}", lessThanPersons);
 
         double matchRate = 0;
 
         for (int i = 61; i <= 70; i++) {
 //        for (int i = 21; i <= 50; i++) {
             List<GlucoseDataRecord> records = glucoseFileDAO.getRecords(fileBaseName + getFileNumber(i));
-            List<GlucoseDataRecord> glucoseMeasures = glucoseService.getGlucoseMeasures(records);
-            String glucoseMeasuresChain = linguisticChainService.getChain(glucoseMeasures, USED_ALPHABET);
+            String glucoseMeasuresChain = linguisticChainService.getChain(records, USED_ALPHABET);
             List<Prediction> predictions = predictionService.checkPrediction(glucoseMeasuresChain, badGlucosePredictions);
             matchRate += calculateMatchRate(glucoseMeasuresChain, predictionLength, bufferLength, predictions);
         }
@@ -59,15 +75,14 @@ public class TestService {
         log.debug("Average match rate: {}%", (matchRate / 10) * 100);
     }
 
-    public void testChain() {
-        List<GlucoseDataRecord> records = glucoseFileDAO.getRecords(fileBaseName + getFileNumber(1));
-        List<GlucoseDataRecord> glucoseMeasures = glucoseService.getGlucoseMeasures(records);
-        String glucoseMeasuresChain = linguisticChainService.getChain(glucoseMeasures, USED_ALPHABET);
-        log.debug(glucoseMeasuresChain);
-        for (GlucoseDataRecord record: glucoseMeasures) {
-            System.out.println(record.getValue());
-        }
-    }
+//    public void testChain() {
+//        List<GlucoseDataRecord> records = glucoseFileDAO.getRecords(fileBaseName + getFileNumber(1));
+//        String glucoseMeasuresChain = linguisticChainService.getChain(records, USED_ALPHABET);
+////        log.debug(glucoseMeasuresChain);
+////        for (GlucoseDataRecord record: glucoseMeasures) {
+////            System.out.println(record.getValue());
+////        }
+//    }
 
     private String getFileNumber(int num) {
         return num < 10 ? "0" + num : "" + num;

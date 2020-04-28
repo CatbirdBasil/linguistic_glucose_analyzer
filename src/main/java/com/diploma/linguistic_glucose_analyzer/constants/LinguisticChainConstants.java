@@ -9,7 +9,9 @@ public interface LinguisticChainConstants {
     int GLUCOSE_MIN_HEALTHY = 40;
     int GLUCOSE_MAX_HEALTHY = 200;
 
-    int MIN_MEASURES_PER_DAY_PER_PERSON = 4;
+    int MIN_MEASURES_PER_DAY_PER_PERSON = 2;
 
     Alphabet USED_ALPHABET = Alphabet.ENGLISH;
+
+    String DEFAULT_ZONE = "America/Toronto";
 }

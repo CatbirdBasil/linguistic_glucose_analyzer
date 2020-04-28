@@ -11,6 +11,4 @@ public interface GlucoseService {
     List<GlucoseDataRecord> getRecordsByPerson(long personId);
 
     void saveRecordsForPerson(List<GlucoseDataRecord> records, long personId);
-
-    List<GlucoseDataRecord> getGlucoseMeasures(List<GlucoseDataRecord> records);
 }

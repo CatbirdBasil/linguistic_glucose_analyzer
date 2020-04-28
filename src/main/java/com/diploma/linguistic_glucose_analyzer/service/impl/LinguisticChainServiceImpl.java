@@ -15,6 +15,7 @@ import static com.diploma.linguistic_glucose_analyzer.constants.LinguisticChainC
 @Slf4j
 @Service
 public class LinguisticChainServiceImpl implements LinguisticChainService {
+
     @Override
     public String getChain(List<GlucoseDataRecord> records, Alphabet alphabet) {
         double step = getStep(alphabet);
@@ -26,6 +27,7 @@ public class LinguisticChainServiceImpl implements LinguisticChainService {
                 if (letterIndex == 26) {
                     log.debug("Record = {}", record);
                 }
+
                 linguisticChain.append(alphabet.getSymbols()[letterIndex]);
             }
         }

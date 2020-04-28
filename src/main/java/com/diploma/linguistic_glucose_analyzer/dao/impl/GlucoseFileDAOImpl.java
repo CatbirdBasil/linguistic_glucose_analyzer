@@ -1,5 +1,6 @@
 package com.diploma.linguistic_glucose_analyzer.dao.impl;
 
+import com.diploma.linguistic_glucose_analyzer.constants.LinguisticChainConstants;
 import com.diploma.linguistic_glucose_analyzer.dao.GlucoseFileDAO;
 import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataCode;
 import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataRecord;
@@ -74,7 +75,7 @@ public class GlucoseFileDAOImpl implements GlucoseFileDAO {
         Instant eventTime;
         try {
             eventTime = LocalDateTime.parse(timeToParse, DateTimeFormatter.ofPattern("H:mm',' M-d-uuuu", Locale.US))
-                    .atZone(ZoneId.of("America/Toronto"))
+                    .atZone(ZoneId.of(LinguisticChainConstants.DEFAULT_ZONE))
                     .toInstant();
         } catch (DateTimeParseException ex) {
             log.debug("Error while parsing date: ", timeToParse);

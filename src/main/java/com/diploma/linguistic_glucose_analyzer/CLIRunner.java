@@ -40,6 +40,6 @@ public class CLIRunner implements CommandLineRunner {
         log.debug("Test for chain length = {} and buffer length = {}", chainLength, bufferLength);
         testService.test(chainLength, bufferLength);
 
-        testService.testChain();
+//        testService.testChain();
     }
 }

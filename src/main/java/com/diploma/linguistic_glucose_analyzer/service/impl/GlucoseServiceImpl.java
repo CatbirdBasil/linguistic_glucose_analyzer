@@ -33,11 +33,4 @@ public class GlucoseServiceImpl implements GlucoseService {
     public void saveRecordsForPerson(List<GlucoseDataRecord> records, long personId) {
         glucoseDAO.saveRecordsForPerson(records, personId);
     }
-
-    @Override
-    public List<GlucoseDataRecord> getGlucoseMeasures(List<GlucoseDataRecord> records) {
-        return records.stream()
-                .filter(rec -> GlucoseDataCodeUtils.isGlucoseMeasurement(rec.getCode()))
-                .collect(Collectors.toList());
-    }
 }

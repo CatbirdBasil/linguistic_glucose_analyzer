@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class GlucoseFiltersProvider implements FiltersProvider {
     @Override
-    public List<RecordFilter> provideFilters() {
+    public List<RecordFilter> getFilters() {
         List<RecordFilter> filters = new ArrayList<>();
 
         filters.add(new GlucoseOnlyRecordFilter());

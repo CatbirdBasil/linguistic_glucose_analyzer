@@ -7,5 +7,5 @@ import java.util.List;
 
 @Service
 public interface FiltersProvider {
-    List<RecordFilter> provideFilters();
+    List<RecordFilter> getFilters();
 }
