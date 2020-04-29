@@ -44,6 +44,10 @@ public class ImMemoryGlucoseDAO implements GlucoseDAO {
 
         List<GlucoseDataRecord> personRecords = records.get(personId);
 
+        for (GlucoseDataRecord record : newRecords) {
+            record.setPersonId(personId);
+        }
+
         if (personRecords == null) {
             records.put(personId, newRecords);
         } else {

@@ -25,20 +25,20 @@ public class CLIRunner implements CommandLineRunner {
         log.debug("Test for chain length = {} and buffer length = {}", chainLength, bufferLength);
         testService.test(chainLength, bufferLength);
 
-        chainLength = 6;
-        bufferLength = 1;
-        log.debug("Test for chain length = {} and buffer length = {}", chainLength, bufferLength);
-        testService.test(chainLength, bufferLength);
+//        chainLength = 6;
+//        bufferLength = 1;
+//        log.debug("Test for chain length = {} and buffer length = {}", chainLength, bufferLength);
+//        testService.test(chainLength, bufferLength);
 
-        chainLength = 3;
-        bufferLength = 3;
-        log.debug("Test for chain length = {} and buffer length = {}", chainLength, bufferLength);
-        testService.test(chainLength, bufferLength);
-
-        chainLength = 3;
-        bufferLength = 3;
-        log.debug("Test for chain length = {} and buffer length = {}", chainLength, bufferLength);
-        testService.test(chainLength, bufferLength);
+//        chainLength = 3;
+//        bufferLength = 3;
+//        log.debug("Test for chain length = {} and buffer length = {}", chainLength, bufferLength);
+//        testService.test(chainLength, bufferLength);
+//
+//        chainLength = 3;
+//        bufferLength = 3;
+//        log.debug("Test for chain length = {} and buffer length = {}", chainLength, bufferLength);
+//        testService.test(chainLength, bufferLength);
 
 //        testService.testChain();
     }

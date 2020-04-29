@@ -1,5 +1,6 @@
 package com.diploma.linguistic_glucose_analyzer.service.impl;
 
+import com.diploma.linguistic_glucose_analyzer.constants.LinguisticChainConstants;
 import com.diploma.linguistic_glucose_analyzer.model.Alphabet;
 import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataRecord;
 import com.diploma.linguistic_glucose_analyzer.service.LinguisticChainService;
@@ -17,6 +18,12 @@ import static com.diploma.linguistic_glucose_analyzer.constants.LinguisticChainC
 public class LinguisticChainServiceImpl implements LinguisticChainService {
 
     @Override
+    public String getChain(List<GlucoseDataRecord> records) {
+        return getChain(records, USED_ALPHABET);
+    }
+
+
+    @Override
     public String getChain(List<GlucoseDataRecord> records, Alphabet alphabet) {
         double step = getStep(alphabet);
 
@@ -24,10 +31,6 @@ public class LinguisticChainServiceImpl implements LinguisticChainService {
         for (GlucoseDataRecord record : records) {
             if (GlucoseDataCodeUtils.isGlucoseMeasurement(record.getCode())) {
                 int letterIndex = (int) Math.floor((record.getValue() - MIN_GLUCOSE) / step);
-                if (letterIndex == 26) {
-                    log.debug("Record = {}", record);
-                }
-
                 linguisticChain.append(alphabet.getSymbols()[letterIndex]);
             }
         }
@@ -36,10 +39,20 @@ public class LinguisticChainServiceImpl implements LinguisticChainService {
     }
 
     @Override
+    public boolean isHyperglycemic(char symbol) {
+        return isHyperglycemic(symbol, USED_ALPHABET);
+    }
+
+    @Override
     public boolean isHyperglycemic(char symbol, Alphabet alphabet) {
         var symbolIndex = Arrays.binarySearch(alphabet.getSymbols(), symbol);
 
         return symbolIndex != -1 && (symbolIndex + 1) * getStep(alphabet) > GLUCOSE_MAX_HEALTHY;
+    }
+
+    @Override
+    public boolean isHypoglycemic(char symbol) {
+        return isHypoglycemic(symbol, USED_ALPHABET);
     }
 
     @Override

@@ -9,7 +9,10 @@ import java.util.List;
 
 @Service
 public interface LinguisticChainService {
+    String getChain(List<GlucoseDataRecord> records);
     String getChain(List<GlucoseDataRecord> records, Alphabet alphabet);
+    boolean isHypoglycemic(char symbol);
     boolean isHypoglycemic(char symbol, Alphabet alphabet);
+    boolean isHyperglycemic(char symbol);
     boolean isHyperglycemic(char symbol, Alphabet alphabet);
 }

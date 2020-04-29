@@ -6,9 +6,15 @@ import lombok.Data;
 import java.time.Instant;
 
 @Data
-@AllArgsConstructor
 public class GlucoseDataRecord {
     private Instant eventTime;
     private GlucoseDataCode code;
     private int value;
+    private long personId;
+
+    public GlucoseDataRecord(Instant eventTime, GlucoseDataCode code, int value) {
+        this.eventTime = eventTime;
+        this.code = code;
+        this.value = value;
+    }
 }
