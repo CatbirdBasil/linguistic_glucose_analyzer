@@ -20,20 +20,8 @@ public class PredictionMatrixFactoryImpl implements PredictionMatrixFactory {
 
     @Override
     public PredictionMatrix getMatrix(List<GlucoseDataRecord> records, int chainLength) {
-        log.debug("Persons: {}", records.size());
-
-        Collection<List<GlucoseDataRecord>> filteredRecords = records.stream()
-                .filter(record -> record.getPersonId() != 0L)
-                .collect(Collectors.groupingBy(GlucoseDataRecord::getPersonId))
-                .values();
-
-        log.debug("Persons: {}", filteredRecords.size());
-
-        List<String> personChains = filteredRecords.stream()
-                .map(personRecords -> linguisticChainService.getChain(personRecords))
-                .collect(Collectors.toList());
-
-        log.debug("Person chains: {}", personChains.size());
+        Collection<List<GlucoseDataRecord>> filteredRecords = getRecordsByPerson(records);
+        List<String> personChains = getChainsByPerson(filteredRecords);
 
         Map<String, Integer> chainOccasions = new HashMap<>();
         Map<String, Map<Character, Integer>> charAfterChainOccasions = new HashMap<>();
@@ -85,5 +73,18 @@ public class PredictionMatrixFactoryImpl implements PredictionMatrixFactory {
         }
 
         return new PredictionMatrix(chainLength, appearanceChances, chainOccasions, charAfterChainOccasions);
+    }
+
+    private Collection<List<GlucoseDataRecord>> getRecordsByPerson(List<GlucoseDataRecord> records) {
+        return records.stream()
+                .filter(record -> record.getPersonId() != 0L)
+                .collect(Collectors.groupingBy(GlucoseDataRecord::getPersonId))
+                .values();
+    }
+
+    private List<String> getChainsByPerson(Collection<List<GlucoseDataRecord>> filteredRecords) {
+        return filteredRecords.stream()
+                .map(personRecords -> linguisticChainService.getChain(personRecords))
+                .collect(Collectors.toList());
     }
 }

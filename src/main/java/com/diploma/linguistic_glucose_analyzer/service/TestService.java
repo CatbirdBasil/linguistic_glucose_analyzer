@@ -1,6 +1,7 @@
 package com.diploma.linguistic_glucose_analyzer.service;
 
 import com.diploma.linguistic_glucose_analyzer.dao.GlucoseFileDAO;
+import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataCode;
 import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataRecord;
 import com.diploma.linguistic_glucose_analyzer.model.Prediction;
 import com.diploma.linguistic_glucose_analyzer.service.filter.RecordFilter;
@@ -49,6 +50,7 @@ public class TestService {
         int lessThanPersons = 0;
 
         for (int i = 1; i <= 60; i++) {
+//        for (int i = 32; i <= 34; i++) {
             List<GlucoseDataRecord> records = glucoseFileDAO.getRecords(fileBaseName + getFileNumber(i));
 
             for (RecordFilter filter : filterProvider.getFilters()) {
@@ -57,6 +59,9 @@ public class TestService {
 
             for (GlucoseDataRecord record : records) {
                 record.setPersonId(i);
+                if (GlucoseDataCode.HYPOGLYCEMIC_SYMPTOMS.equals(record.getCode())) {
+                    log.debug("HYPO: Person #{}", i);
+                }
             }
 
             allFilteredGlucoseRecords.addAll(records);
@@ -67,6 +72,7 @@ public class TestService {
 //                log.debug("LESS THEN 4 MES/DAY for {} file", i);
                 lessThanPersons++;
             } else {
+//                log.debug(glucoseMeasuresChain);
                 badGlucosePredictions.addAll(badGlucoseFinderService
                         .findBadGlucose(glucoseMeasuresChain, predictionLength, bufferLength, i));
             }
@@ -88,25 +94,35 @@ public class TestService {
         log.debug("TOP TEN: ");
         seeTopTen(allFilteredGlucoseRecords);
 
-        PredictionMatrix predictionMatrix = predictionMatrixFactory.getMatrix(allFilteredGlucoseRecords, 3
-        );
-        log.debug("LEAST TEN CHANCES (AB)");
+        PredictionMatrix predictionMatrix = predictionMatrixFactory.getMatrix(allFilteredGlucoseRecords, 3);
+//        log.debug("LEAST TEN CHANCES (AB)");
+//        log.debug("Possible chains before A: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('A')));
+//        log.debug("Possible chains before B {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('B')));
+//        log.debug("TOP TEN CHANCES (MNOPQRSTUVWXZ)");
+//        log.debug("Possible chains before M: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('M')));
+//        log.debug("Possible chains before O: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('O')));
+//        log.debug("Possible chains before P: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('P')));
+//        log.debug("Possible chains before Q: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('Q')));
+//        log.debug("Possible chains before R: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('R')));
+//        log.debug("Possible chains before S: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('S')));
+//        log.debug("Possible chains before T: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('T')));
+//        log.debug("Possible chains before U: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('U')));
+//        log.debug("Possible chains before V: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('V')));
+//        log.debug("Possible chains before W: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('W')));
+//        log.debug("Possible chains before X: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('X')));
+//        log.debug("Possible chains before Z: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('Z')));
+
+        log.debug("LEAST TEN (A)");
         log.debug("Possible chains before A: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('A')));
-        log.debug("Possible chains before B {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('B')));
-//        log.debug("Possible chains before C: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('C')));
-        log.debug("TOP TEN CHANCES (MNOPQRSTUVWXZ)");
+        log.debug("TOP TEN (LMNOPQRS)");
+        log.debug("Possible chains before L: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('L')));
         log.debug("Possible chains before M: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('M')));
+        log.debug("Possible chains before N: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('N')));
         log.debug("Possible chains before O: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('O')));
         log.debug("Possible chains before P: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('P')));
         log.debug("Possible chains before Q: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('Q')));
         log.debug("Possible chains before R: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('R')));
         log.debug("Possible chains before S: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('S')));
-        log.debug("Possible chains before T: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('T')));
-        log.debug("Possible chains before U: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('U')));
-        log.debug("Possible chains before V: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('V')));
-        log.debug("Possible chains before W: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('W')));
-        log.debug("Possible chains before X: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('X')));
-        log.debug("Possible chains before Z: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('Z')));
 
 //        log.debug("Prediction matrix: {}", predictionMatrix);
 //        log.debug("Possible chains before G: {}", predictionMatrix.getChainOccasions());
@@ -146,6 +162,7 @@ public class TestService {
         chain.chars().mapToObj(c -> Character.toString((char) c))
                 .distinct()
                 .forEach(System.out::print);
+        System.out.println("");
     }
 
     private void seeTopTen(List<GlucoseDataRecord> records) {
@@ -159,6 +176,7 @@ public class TestService {
         chain.chars().mapToObj(c -> Character.toString((char) c))
                 .distinct()
                 .forEach(System.out::print);
+        System.out.println("");
     }
 
     private Map<String, Double> sortDesc(Map<String, Double> map) {

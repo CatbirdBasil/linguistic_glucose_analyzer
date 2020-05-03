@@ -29,7 +29,7 @@ public class LinguisticChainServiceImpl implements LinguisticChainService {
 
         StringBuilder linguisticChain = new StringBuilder();
         for (GlucoseDataRecord record : records) {
-            if (GlucoseDataCodeUtils.isGlucoseMeasurement(record.getCode())) {
+            if (GlucoseDataCodeUtils.isGlucoseMeasurement(record.getCode())) { //TODO Remove and check
                 int letterIndex = (int) Math.floor((record.getValue() - MIN_GLUCOSE) / step);
                 linguisticChain.append(alphabet.getSymbols()[letterIndex]);
             }
