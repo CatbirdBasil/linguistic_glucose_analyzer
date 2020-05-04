@@ -22,8 +22,8 @@ import java.util.Locale;
 import java.util.stream.Stream;
 
 @Slf4j
-//@Repository
-public class GlucoseFileDAOImpl implements GlucoseFileDAO {
+@Repository
+public class ContiniousGlucoseFileDAOImpl implements GlucoseFileDAO {
 
     /**
      * Fetch all records from file
@@ -46,7 +46,7 @@ public class GlucoseFileDAOImpl implements GlucoseFileDAO {
             var records = new ArrayList<GlucoseDataRecord>();
             try (Stream<String> linesStream = Files.lines(recordsFile.toPath())) {
                 linesStream.forEach(line -> {
-                    String[] recordData = line.split("\t", -1);
+                    String[] recordData = line.split(",", -1);
                     GlucoseDataRecord record = getRecord(recordData);
                     if (record != null) {
                         records.add(record);
@@ -65,7 +65,7 @@ public class GlucoseFileDAOImpl implements GlucoseFileDAO {
     }
 
     private GlucoseDataRecord getRecord(String[] recordData) {
-        if (recordData == null || recordData.length != 4) {
+        if (recordData == null || recordData.length < 3) {
             log.debug("Invalid data received: {}", Arrays.toString(recordData));
             return null;
         }
@@ -74,7 +74,7 @@ public class GlucoseFileDAOImpl implements GlucoseFileDAO {
 
         Instant eventTime;
         try {
-            eventTime = LocalDateTime.parse(timeToParse, DateTimeFormatter.ofPattern("H:mm',' M-d-uuuu", Locale.US))
+            eventTime = LocalDateTime.parse(timeToParse, DateTimeFormatter.ofPattern("H:mm:ss',' uuuu-M-d", Locale.US))
                     .atZone(ZoneId.of(LinguisticChainConstants.DEFAULT_ZONE))
                     .toInstant();
         } catch (DateTimeParseException ex) {
@@ -83,18 +83,16 @@ public class GlucoseFileDAOImpl implements GlucoseFileDAO {
             return null;
         }
 
-        GlucoseDataCode code;
-        int value;
+        double value;
 
         try {
-            code = GlucoseDataCode.valueOf(Integer.parseInt(recordData[2]));
-            value = Integer.parseInt(recordData[3]);
+            value = Double.parseDouble(recordData[2]);
         } catch (NumberFormatException ex) {
-            log.debug("Error while parsing code({}) or value({})", recordData[2], recordData[3]);
+            log.debug("Error while parsing value({})", recordData[2]);
             log.debug("Stacktrace: ", ex);
             return null;
         }
 
-        return new GlucoseDataRecord(eventTime, code, value);
+        return new GlucoseDataRecord(eventTime, GlucoseDataCode.UNSPECIFIED_BLOOD_GLUCOSE_MEASUREMENT, (int) Math.floor(value * 18));
     }
 }

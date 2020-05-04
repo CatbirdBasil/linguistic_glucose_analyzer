@@ -30,7 +30,8 @@ public class TestService {
     private FiltersProvider filterProvider;
     private PredictionMatrixFactory predictionMatrixFactory;
 
-    private static final String fileBaseName = "Diabetes-Data/data-";
+//    private static final String fileBaseName = "Diabetes-Data/data-";
+    private static final String fileBaseName = "Glucose/glucose";
 
     @Autowired
     public TestService(GlucoseService glucoseService, PredictionService predictionService, LinguisticChainService linguisticChainService, BadGlucoseFinderService badGlucoseFinderService, GlucoseFileDAO glucoseFileDAO, FiltersProvider filterProvider, PredictionMatrixFactory predictionMatrixFactory) {
@@ -49,7 +50,7 @@ public class TestService {
 
         int lessThanPersons = 0;
 
-        for (int i = 1; i <= 60; i++) {
+        for (int i = 1; i <= 5; i++) {
 //        for (int i = 32; i <= 34; i++) {
             List<GlucoseDataRecord> records = glucoseFileDAO.getRecords(fileBaseName + getFileNumber(i));
 
@@ -94,7 +95,7 @@ public class TestService {
         log.debug("TOP TEN: ");
         seeTopTen(allFilteredGlucoseRecords);
 
-        PredictionMatrix predictionMatrix = predictionMatrixFactory.getMatrix(allFilteredGlucoseRecords, 3);
+        PredictionMatrix predictionMatrix = predictionMatrixFactory.getMatrix(allFilteredGlucoseRecords, 10);
 //        log.debug("LEAST TEN CHANCES (AB)");
 //        log.debug("Possible chains before A: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('A')));
 //        log.debug("Possible chains before B {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('B')));
@@ -112,17 +113,15 @@ public class TestService {
 //        log.debug("Possible chains before X: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('X')));
 //        log.debug("Possible chains before Z: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('Z')));
 
-        log.debug("LEAST TEN (A)");
+        log.debug("LEAST TEN (AB)");
         log.debug("Possible chains before A: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('A')));
-        log.debug("TOP TEN (LMNOPQRS)");
-        log.debug("Possible chains before L: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('L')));
-        log.debug("Possible chains before M: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('M')));
-        log.debug("Possible chains before N: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('N')));
-        log.debug("Possible chains before O: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('O')));
+        log.debug("Possible chains before B: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('B')));
+        log.debug("TOP TEN (PQRST)");
         log.debug("Possible chains before P: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('P')));
         log.debug("Possible chains before Q: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('Q')));
         log.debug("Possible chains before R: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('R')));
         log.debug("Possible chains before S: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('S')));
+        log.debug("Possible chains before T: {}", sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol('T')));
 
 //        log.debug("Prediction matrix: {}", predictionMatrix);
 //        log.debug("Possible chains before G: {}", predictionMatrix.getChainOccasions());
@@ -138,7 +137,8 @@ public class TestService {
 //    }
 
     private String getFileNumber(int num) {
-        return num < 10 ? "0" + num : "" + num;
+//        return num < 10 ? "0" + num : "" + num;
+        return (num < 10 ? "0" + num : "" + num) + ".csv";
     }
 
     private double calculateMatchRate(String linguisticChain,
