@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.diploma.linguistic_glucose_analyzer.constants.LinguisticChainConstants.USED_ALPHABET;
+import static com.diploma.linguistic_glucose_analyzer.constants.LinguisticChainConstants.*;
 
 @Slf4j
 @Service
@@ -90,6 +90,10 @@ public class TestService {
 //        }
 //
 //        log.debug("Average match rate: {}%", (matchRate / 10) * 100);
+
+        log.debug("SYMBOL TABLE: ");
+        seeSymbolTable();
+
         log.debug("LEAST TEN: ");
         seeLeastTen(allFilteredGlucoseRecords);
         log.debug("TOP TEN: ");
@@ -200,6 +204,18 @@ public class TestService {
                         sortedMap.put(entry.getKey(), entry.getValue()));
 
         return sortedMap;
+    }
+
+    public void seeSymbolTable() {
+        char[] symbols = USED_ALPHABET.getSymbols();
+
+        for (int i = 0; i < symbols.length; i++) {
+            log.debug("s{} = ({}), starts at {}", i, symbols[i], i * getStep());
+        }
+    }
+
+    private double getStep() {
+        return (double) (MAX_GLUCOSE - MIN_GLUCOSE) / USED_ALPHABET.getSymbols().length;
     }
 }
 

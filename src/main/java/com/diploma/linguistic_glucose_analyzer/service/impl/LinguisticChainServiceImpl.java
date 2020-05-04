@@ -26,13 +26,15 @@ public class LinguisticChainServiceImpl implements LinguisticChainService {
     @Override
     public String getChain(List<GlucoseDataRecord> records, Alphabet alphabet) {
         double step = getStep(alphabet);
+        char[] symbols = alphabet.getSymbols();
 
         StringBuilder linguisticChain = new StringBuilder();
         for (GlucoseDataRecord record : records) {
-            if (GlucoseDataCodeUtils.isGlucoseMeasurement(record.getCode())) { //TODO Remove and check
-                int letterIndex = (int) Math.floor((record.getValue() - MIN_GLUCOSE) / step);
-                linguisticChain.append(alphabet.getSymbols()[letterIndex]);
-            }
+            char symbolToAppend = record.getValue() > MAX_GLUCOSE ?
+                    symbols[symbols.length - 1] :
+                    symbols[(int) Math.floor((record.getValue() - MIN_GLUCOSE) / step)];
+
+            linguisticChain.append(symbolToAppend);
         }
 
         return linguisticChain.toString();

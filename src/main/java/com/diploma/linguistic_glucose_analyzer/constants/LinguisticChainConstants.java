@@ -11,7 +11,7 @@ public interface LinguisticChainConstants {
 
     int MIN_MEASURES_PER_DAY_PER_PERSON = 2;
 
-    Alphabet USED_ALPHABET = Alphabet.ENGLISH;
+    Alphabet USED_ALPHABET = Alphabet.ASCII100;
 
     String DEFAULT_ZONE = "America/Toronto";
 }
