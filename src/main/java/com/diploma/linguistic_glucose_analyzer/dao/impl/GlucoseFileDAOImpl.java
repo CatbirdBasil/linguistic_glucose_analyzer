@@ -22,7 +22,7 @@ import java.util.Locale;
 import java.util.stream.Stream;
 
 @Slf4j
-//@Repository
+@Repository
 public class GlucoseFileDAOImpl implements GlucoseFileDAO {
 
     /**

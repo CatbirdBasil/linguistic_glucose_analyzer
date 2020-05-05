@@ -5,6 +5,7 @@ import com.diploma.linguistic_glucose_analyzer.dao.GlucoseFileDAO;
 import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataCode;
 import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataRecord;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
@@ -22,6 +23,7 @@ import java.util.Locale;
 import java.util.stream.Stream;
 
 @Slf4j
+@Primary
 @Repository
 public class ContinuousGlucoseFileDAOImpl implements GlucoseFileDAO {
 

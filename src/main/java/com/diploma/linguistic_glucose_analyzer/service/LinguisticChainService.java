@@ -6,8 +6,8 @@ import com.diploma.linguistic_glucose_analyzer.service.filter.RecordFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
-@Service
 public interface LinguisticChainService {
     String getChain(List<GlucoseDataRecord> records);
     String getChain(List<GlucoseDataRecord> records, Alphabet alphabet);
@@ -15,4 +15,7 @@ public interface LinguisticChainService {
     boolean isHypoglycemic(char symbol, Alphabet alphabet);
     boolean isHyperglycemic(char symbol);
     boolean isHyperglycemic(char symbol, Alphabet alphabet);
+
+    //TODO Remove
+    Map<Character, Double> getSymbolsUpperBound();
 }

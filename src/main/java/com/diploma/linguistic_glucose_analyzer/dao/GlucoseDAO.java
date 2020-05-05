@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface GlucoseDAO {
     List<GlucoseDataRecord> getAllRecords();
     List<GlucoseDataRecord> getRecordsByPerson(long personId);

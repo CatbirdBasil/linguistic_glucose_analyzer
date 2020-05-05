@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface PredictionService {
     List<Prediction> checkPrediction(String linguisticChain);
     List<Prediction> checkPrediction(String linguisticChain, int length);
