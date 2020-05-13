@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Repository
-public class GlucoseFileDAOImpl implements GlucoseFileDAO {
+public class UCLGlucoseFileDAO implements GlucoseFileDAO {
 
     /**
      * Fetch all records from file
