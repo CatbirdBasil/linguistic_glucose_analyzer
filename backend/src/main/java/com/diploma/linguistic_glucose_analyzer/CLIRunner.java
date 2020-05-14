@@ -23,7 +23,7 @@ public class CLIRunner implements CommandLineRunner {
         int chainLength = 3;
         int bufferLength = 1;
         log.debug("Test for chain length = {} and buffer length = {}", chainLength, bufferLength);
-        testService.test(chainLength, bufferLength);
+        testService.testPrediction(chainLength, bufferLength);
 
 //        chainLength = 6;
 //        bufferLength = 1;

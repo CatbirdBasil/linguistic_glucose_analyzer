@@ -12,7 +12,7 @@
     <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>backend</name>
-    <description>Ivan Shaverskyi Diploma that will help people with Diabities to prevent hign and low glucose levels
+    <description>Ivan Shaverskyi Diploma that will help people with Diabetes to prevent high and low glucose levels
     </description>
 
     <properties>

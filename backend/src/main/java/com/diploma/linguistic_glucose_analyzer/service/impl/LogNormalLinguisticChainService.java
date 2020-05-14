@@ -16,7 +16,7 @@ import java.util.function.Function;
 import static com.diploma.linguistic_glucose_analyzer.constants.LinguisticChainConstants.*;
 
 @Slf4j
-@Primary
+//@Primary
 @Service
 public class LogNormalLinguisticChainService extends AbstractLinguisticChainService implements LinguisticChainService {
 

@@ -34,7 +34,7 @@ public class TestService {
     private FiltersProvider filterProvider;
     private PredictionMatrixFactory predictionMatrixFactory;
 
-//    private static final String fileBaseName = "Diabetes-Data/data-";
+    //    private static final String fileBaseName = "Diabetes-Data/data-";
     private static final String fileBaseName = "Glucose/glucose";
 
     @Autowired
@@ -229,5 +229,108 @@ public class TestService {
 //    private double getStep() {
 //        return (double) (MAX_GLUCOSE - MIN_GLUCOSE) / USED_ALPHABET.getSymbols().length;
 //    }
+
+
+    public void testPrediction(int predictionLength, int bufferLength) {
+        List<GlucoseDataRecord> allFilteredGlucoseRecords = new ArrayList<>();
+
+        int lessThanPersons = 0;
+
+        for (int i = 1; i <= 1; i++) {
+//        for (int i = 32; i <= 34; i++) {
+            List<GlucoseDataRecord> records = glucoseFileDAO.getRecords(fileBaseName + getFileNumber(i));
+
+            for (RecordFilter filter : filterProvider.getFilters()) {
+                records = filter.filter(records);
+            }
+
+            for (GlucoseDataRecord record : records) {
+                record.setPersonId(i);
+                if (GlucoseDataCode.HYPOGLYCEMIC_SYMPTOMS.equals(record.getCode())) {
+                    log.debug("HYPO: Person #{}", i);
+                }
+            }
+
+            allFilteredGlucoseRecords.addAll(records);
+
+            String glucoseMeasuresChain = linguisticChainService.getChain(records, USED_ALPHABET);
+
+            if ("".equals(glucoseMeasuresChain)) {
+//                log.debug("LESS THEN 4 MES/DAY for {} file", i);
+                lessThanPersons++;
+            } else {
+                log.debug(glucoseMeasuresChain);
+            }
+        }
+        log.debug("Less then persons: {}", lessThanPersons);
+
+
+        log.debug("SYMBOL TABLE: ");
+        seeSymbolTable();
+
+        log.debug("LEAST TEN: ");
+        String leastTen = seeLeastTen(allFilteredGlucoseRecords);
+        log.debug("TOP TEN: ");
+        String topTen = seeTopTen(allFilteredGlucoseRecords);
+
+        PredictionMatrix predictionMatrix = predictionMatrixFactory.getMatrix(allFilteredGlucoseRecords, 1);
+
+        log.debug("LEAST TEN ({}})", leastTen);
+        for (char symbol : leastTen.toCharArray()) {
+            log.debug("Possible chains before {}: {}", symbol, sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol(symbol)));
+        }
+
+        log.debug("TOP TEN ({}})", topTen);
+        for (char symbol : topTen.toCharArray()) {
+            log.debug("Possible chains before {}: {}", symbol, sortDesc(predictionMatrix.getPossibleChainsBeforeSymbol(symbol)));
+        }
+
+
+        //00000000000
+        String glucoseMeasuresChain = linguisticChainService.getChain(allFilteredGlucoseRecords);
+
+        String testAvailableChain = glucoseMeasuresChain.substring(0, (int) Math.floor(glucoseMeasuresChain.length() * 0.9));
+        String realChainEnd = glucoseMeasuresChain.substring((int) Math.floor(glucoseMeasuresChain.length() * 0.9), glucoseMeasuresChain.length());
+        StringBuilder predictedChain = new StringBuilder();
+        char lastSymbol = testAvailableChain.charAt(testAvailableChain.length() - 1);
+
+        for (int i = 0; i < realChainEnd.length(); i++) {
+            Map<Character, Double> appearanceChances = predictionMatrix.getAppearanceChances().get(String.valueOf(lastSymbol));
+
+            if (appearanceChances == null) {
+                log.debug("UNEXPECTED LAST SYMBOL [{}]. Terminating early", lastSymbol);
+                break;
+            }
+
+            double currMax = Double.MIN_VALUE;
+            for (Map.Entry<Character, Double> appearanceChance : appearanceChances.entrySet()) {
+                if (appearanceChance.getValue() > currMax) {
+                    currMax = appearanceChance.getValue();
+                    lastSymbol = appearanceChance.getKey();
+                }
+            }
+
+//            if (appearanceChances.size() == 1) {
+//                log.debug("ONLY ONE CHOICE AFTER {}", lastSymbol);
+//            } else {
+//                double prevMax = currMax;
+//                currMax = Double.MIN_VALUE;
+//                for (Map.Entry<Character, Double> appearanceChance : appearanceChances.entrySet()) {
+//                    double currChance = appearanceChance.getValue();
+//                    if (currChance > currMax && currChance != prevMax) {
+//                        currMax = appearanceChance.getValue();
+//                        lastSymbol = appearanceChance.getKey();
+//                    }
+//                }
+//            }
+
+            predictedChain.append(lastSymbol);
+        }
+
+        log.debug("Prediction for chain: {}", testAvailableChain);
+        log.debug("Expected: {}", realChainEnd);
+        log.debug("Received: {}", predictedChain.toString());
+    }
+
 }
 
