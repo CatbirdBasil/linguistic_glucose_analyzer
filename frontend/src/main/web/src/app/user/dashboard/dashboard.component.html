@@ -1,0 +1,75 @@
+<div class="grid-container">
+  <mat-grid-list cols="2" rowHeight="350px">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            Bar chart
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <div class="chart">
+            <canvas (chartClick)="barClicked($event)"
+                    (chartHover)="barHovered($event)"
+                    [chartType]="bar"
+                    [colors]="barColors"
+                    [datasets]="barDatasets"
+                    [labels]="barLabels"
+                    [legend]="true"
+                    [options]="barOptions"
+                    mdbChart>
+            </canvas>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="2">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            Doughnut chart
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <div class="chart">
+            <canvas (chartClick)="doughnutClicked($event)"
+                    (chartHover)="doughnutHovered($event)"
+                    [chartType]="doughnut"
+                    [colors]="doughnutColors"
+                    [datasets]="doughnutDatasets"
+                    [height]="doughnutHeight"
+                    [labels]="doughnutLabels"
+                    [legend]="true"
+                    [options]="doughnutOptions"
+                    [width]="doughnutWidth"
+                    mdbChart>
+            </canvas>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            Line chart
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <div class="chart">
+            <canvas (chartClick)="lineClicked($event)"
+                    (chartHover)="lineHovered($event)"
+                    [chartType]="line"
+                    [colors]="lineColors"
+                    [datasets]="lineDatasets"
+                    [labels]="lineLabels"
+                    [legend]="true"
+                    [options]="lineOptions"
+                    mdbChart>
+            </canvas>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

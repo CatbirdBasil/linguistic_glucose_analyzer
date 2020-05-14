@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <a class="navbar-brand" routerLink="/">
+    <img alt="javaImg" class="img-brand" src="../../../assets/images/java.png">
+    <span class="text-warning">TripGod</span>
+  </a>
+  <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbar"
+          aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse flex-row-reverse" id="navbar">
+
+    <div *ngIf="isLoggedIn()">
+      <ul class="navbar-nav mr-1">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/account">Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="logout()" routerLink="/login">Logout</a>
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="!isLoggedIn()">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/login">Sign in</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/registration">Sign up</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

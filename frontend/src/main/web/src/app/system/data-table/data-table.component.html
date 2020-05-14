@@ -1,0 +1,48 @@
+<div class="container table-container">
+  <div class="mat-elevation-z8 card card-layout table-layout">
+    <div class="card-header">{{caption}}</div>
+    <div class="card-body">
+
+      <div>
+        <mat-form-field>
+          <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+        </mat-form-field>
+      </div>
+
+      <mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container *ngFor="let column of primaryKeys; index as i" [matColumnDef]="column">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="col-name-layout">
+            {{column | toTitle}}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element;">{{element[column] | formatCell: columnsMap[i]}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+          <mat-header-cell *matHeaderCellDef class="edit-col-layout">Edit</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button mat-icon-button class="btn-edit" (click)="edit()">
+              <mat-icon class="mat-18">create</mat-icon>
+            </button>
+            <button hidden mat-icon-button class="btn-edit" (click)="save()">
+              <mat-icon class="mat-18">check</mat-icon>
+            </button>
+            <button mat-icon-button class="btn-delete" (click)="cancel()">
+              <mat-icon class="mat-18">delete</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
+      </mat-table>
+      <mat-paginator [length]="dataSource.data.length"
+                     [pageIndex]="0"
+                     [pageSize]="10"
+                     [pageSizeOptions]="[1, 2, 10, 25, 50]"
+                     showFirstLastButtons>
+      </mat-paginator>
+    </div>
+  </div>
+</div>
+

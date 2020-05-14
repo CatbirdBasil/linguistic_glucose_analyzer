@@ -1,0 +1,62 @@
+<div class="container container-layout">
+  <div class="row">
+    <div class="offset-3"></div>
+    <div class="col-md-6">
+      <div class="card card-layout">
+        <form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="card-block card-content form-layout">
+          <h2 class="card-title" align="center">Sign in</h2>
+          <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+          <!-- Username -->
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text"
+                   id="username"
+                   name="username"
+                   class="form-control"
+                   placeholder="Enter a username"
+                   formControlName="username"
+                   autocomplete="name"
+                   [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+            />
+            <!--validation of input-->
+            <div *ngIf="submitted && f.username.errors" class="invalid-input">
+              <div *ngIf="f.username.errors.required">Field is empty</div>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="password">Password</label>
+            <a class="forgot-link" routerLink="/passwordRecovery">Forgot password?</a>
+            <input type="password"
+                   id="password"
+                   name="password"
+                   class="form-control"
+                   placeholder="Enter your password"
+                   formControlName="password"
+                   autocomplete="password"
+                   [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+            />
+
+            <!--validation of input-->
+            <div *ngIf="submitted && f.password.errors" class="invalid-input">
+              <div *ngIf="f.password.errors.required">Field is empty</div>
+            </div>
+          </div>
+
+          <div>
+            <button class="btn btn-success btn-wide">
+              Sign in
+              <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+    <div class="offset-3"></div>
+  </div>
+</div>
+
+
