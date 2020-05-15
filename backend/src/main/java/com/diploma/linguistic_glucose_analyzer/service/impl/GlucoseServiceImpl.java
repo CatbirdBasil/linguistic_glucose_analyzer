@@ -30,7 +30,7 @@ public class GlucoseServiceImpl implements GlucoseService {
 
     @Override
 //    @Transactional
-    public void saveRecordsForPerson(List<GlucoseDataRecord> records, long personId) {
-        glucoseDAO.saveRecordsForPerson(records, personId);
+    public void saveRecords(List<GlucoseDataRecord> records) {
+        glucoseDAO.saveRecordsForPerson(records);
     }
 }

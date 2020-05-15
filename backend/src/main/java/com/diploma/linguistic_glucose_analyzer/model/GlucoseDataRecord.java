@@ -7,7 +7,8 @@ import java.time.Instant;
 
 @Data
 public class GlucoseDataRecord {
-    private Instant eventTime;
+    private long id;
+    private Instant eventTime; //TODO Possible problems with date saving to db
     private GlucoseDataCode code;
     private int value;
     private long personId;

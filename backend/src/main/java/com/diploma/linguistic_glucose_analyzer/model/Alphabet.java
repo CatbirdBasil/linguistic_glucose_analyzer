@@ -4,12 +4,14 @@ import lombok.Getter;
 
 @Getter
 public enum Alphabet {
-    ENGLISH("ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray()),
-    ASCII100(Alphabet.generateCharArray(26, 126));
+    ENGLISH(1L, "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray()),
+    ASCII100(2L, Alphabet.generateCharArray(26, 126));
 
+    private final long id;
     private final char[] symbols;
 
-    Alphabet(char[] symbols) {
+    Alphabet(long id, char[] symbols) {
+        this.id = id;
         this.symbols = symbols;
     }
 

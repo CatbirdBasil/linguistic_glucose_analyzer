@@ -9,5 +9,5 @@ public interface GlucoseDAO {
     List<GlucoseDataRecord> getAllRecords();
     List<GlucoseDataRecord> getRecordsByPerson(long personId);
 
-    void saveRecordsForPerson(List<GlucoseDataRecord> records, long personId);
+    void saveRecordsForPerson(List<GlucoseDataRecord> records);
 }

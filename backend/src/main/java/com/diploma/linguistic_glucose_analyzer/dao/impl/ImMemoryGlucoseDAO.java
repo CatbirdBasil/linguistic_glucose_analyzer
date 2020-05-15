@@ -39,8 +39,13 @@ public class ImMemoryGlucoseDAO implements GlucoseDAO {
     }
 
     @Override
-    public void saveRecordsForPerson(List<GlucoseDataRecord> newRecords, long personId) {
-        log.trace("Saving records {} to glucose repo for person id = {}", newRecords, personId);
+    public void saveRecordsForPerson(List<GlucoseDataRecord> newRecords) {
+        log.trace("Saving records {} to glucos", newRecords);
+
+        long personId = 1;
+        if (newRecords != null && newRecords.size() > 0) {
+            personId = newRecords.get(0).getPersonId();
+        }
 
         List<GlucoseDataRecord> personRecords = records.get(personId);
 
