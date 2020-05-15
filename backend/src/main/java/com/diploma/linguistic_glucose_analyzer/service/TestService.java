@@ -1,9 +1,7 @@
 package com.diploma.linguistic_glucose_analyzer.service;
 
 import com.diploma.linguistic_glucose_analyzer.dao.GlucoseFileDAO;
-import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataCode;
-import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataRecord;
-import com.diploma.linguistic_glucose_analyzer.model.Prediction;
+import com.diploma.linguistic_glucose_analyzer.model.*;
 import com.diploma.linguistic_glucose_analyzer.service.BadGlucoseFinderService;
 import com.diploma.linguistic_glucose_analyzer.service.GlucoseService;
 import com.diploma.linguistic_glucose_analyzer.service.LinguisticChainService;
@@ -33,12 +31,14 @@ public class TestService {
 
     private FiltersProvider filterProvider;
     private PredictionMatrixFactory predictionMatrixFactory;
+    private PersonService personService;
+
 
     //    private static final String fileBaseName = "Diabetes-Data/data-";
     private static final String fileBaseName = "Glucose/glucose";
 
     @Autowired
-    public TestService(GlucoseService glucoseService, PredictionService predictionService, LinguisticChainService linguisticChainService, BadGlucoseFinderService badGlucoseFinderService, GlucoseFileDAO glucoseFileDAO, FiltersProvider filterProvider, PredictionMatrixFactory predictionMatrixFactory) {
+    public TestService(GlucoseService glucoseService, PredictionService predictionService, LinguisticChainService linguisticChainService, BadGlucoseFinderService badGlucoseFinderService, GlucoseFileDAO glucoseFileDAO, FiltersProvider filterProvider, PredictionMatrixFactory predictionMatrixFactory, PersonService personService) {
         this.glucoseService = glucoseService;
         this.predictionService = predictionService;
         this.linguisticChainService = linguisticChainService;
@@ -46,6 +46,7 @@ public class TestService {
         this.glucoseFileDAO = glucoseFileDAO;
         this.filterProvider = filterProvider;
         this.predictionMatrixFactory = predictionMatrixFactory;
+        this.personService = personService;
     }
 
     public void test(int predictionLength, int bufferLength) {
@@ -55,6 +56,8 @@ public class TestService {
         int lessThanPersons = 0;
 
         for (int i = 1; i <= 5; i++) {
+            Person person = new Person(DiabetesType.TYPE_TWO);
+            person.setId(i);
 //        for (int i = 32; i <= 34; i++) {
             List<GlucoseDataRecord> records = glucoseFileDAO.getRecords(fileBaseName + getFileNumber(i));
 
@@ -63,7 +66,7 @@ public class TestService {
             }
 
             for (GlucoseDataRecord record : records) {
-                record.setPersonId(i);
+                record.setPerson(person);
                 if (GlucoseDataCode.HYPOGLYCEMIC_SYMPTOMS.equals(record.getCode())) {
                     log.debug("HYPO: Person #{}", i);
                 }
@@ -238,6 +241,8 @@ public class TestService {
 
         for (int i = 1; i <= 1; i++) {
 //        for (int i = 32; i <= 34; i++) {
+            Person person = new Person(DiabetesType.TYPE_TWO);
+            person.setId(i);
             List<GlucoseDataRecord> records = glucoseFileDAO.getRecords(fileBaseName + getFileNumber(i));
 
             for (RecordFilter filter : filterProvider.getFilters()) {
@@ -245,7 +250,7 @@ public class TestService {
             }
 
             for (GlucoseDataRecord record : records) {
-                record.setPersonId(i);
+                record.setPerson(person);
                 if (GlucoseDataCode.HYPOGLYCEMIC_SYMPTOMS.equals(record.getCode())) {
                     log.debug("HYPO: Person #{}", i);
                 }
@@ -330,6 +335,44 @@ public class TestService {
         log.debug("Prediction for chain: {}", testAvailableChain);
         log.debug("Expected: {}", realChainEnd);
         log.debug("Received: {}", predictedChain.toString());
+    }
+
+
+
+    public void test3() {
+        Person person = new Person(DiabetesType.TYPE_TWO);
+        personService.save(person);
+
+        List<GlucoseDataRecord> allFilteredGlucoseRecords = new ArrayList<>();
+
+        int lessThanPersons = 0;
+        for (int i = 1; i <= 1; i++) {
+//        for (int i = 32; i <= 34; i++) {
+            List<GlucoseDataRecord> records = glucoseFileDAO.getRecords(fileBaseName + getFileNumber(i));
+
+            for (RecordFilter filter : filterProvider.getFilters()) {
+                records = filter.filter(records);
+            }
+
+            for (GlucoseDataRecord record : records) {
+                record.setPerson(person);
+            }
+
+            allFilteredGlucoseRecords.addAll(records);
+            glucoseService.saveAll(allFilteredGlucoseRecords);
+
+            String glucoseMeasuresChain = linguisticChainService.getChain(records, USED_ALPHABET);
+
+            if ("".equals(glucoseMeasuresChain)) {
+//                log.debug("LESS THEN 4 MES/DAY for {} file", i);
+                lessThanPersons++;
+            } else {
+                log.debug(glucoseMeasuresChain);
+            }
+
+            List<GlucoseDataRecord> dbRecords = glucoseService.getAll();
+            log.debug("dbRecords = {}", dbRecords);
+        }
     }
 
 }

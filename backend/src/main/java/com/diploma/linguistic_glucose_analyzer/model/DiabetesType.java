@@ -13,4 +13,14 @@ public enum DiabetesType {
     DiabetesType(long id) {
         this.id = id;
     }
+
+    public static DiabetesType valueOf(long id) {
+        for (DiabetesType type : values()) {
+            if (type.id == id) {
+                return type;
+            }
+        }
+
+        return null;
+    }
 }

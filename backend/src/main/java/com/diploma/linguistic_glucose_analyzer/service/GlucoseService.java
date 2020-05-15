@@ -5,9 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface GlucoseService {
-    List<GlucoseDataRecord> getAllRecords();
+public interface GlucoseService extends CrudService<GlucoseDataRecord, Long> {
     List<GlucoseDataRecord> getRecordsByPerson(long personId);
-
-    void saveRecords(List<GlucoseDataRecord> records);
 }

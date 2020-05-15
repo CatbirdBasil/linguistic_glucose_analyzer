@@ -26,4 +26,14 @@ public enum Alphabet {
 
         return result;
     }
+
+    public static Alphabet valueOf(long id) {
+        for (Alphabet alphabet : values()) {
+            if (alphabet.id == id) {
+                return alphabet;
+            }
+        }
+
+        return null;
+    }
 }

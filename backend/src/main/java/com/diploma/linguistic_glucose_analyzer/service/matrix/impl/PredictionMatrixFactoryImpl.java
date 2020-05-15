@@ -77,8 +77,8 @@ public class PredictionMatrixFactoryImpl implements PredictionMatrixFactory {
 
     private Collection<List<GlucoseDataRecord>> getRecordsByPerson(List<GlucoseDataRecord> records) {
         return records.stream()
-                .filter(record -> record.getPersonId() != 0L)
-                .collect(Collectors.groupingBy(GlucoseDataRecord::getPersonId))
+                .filter(record -> record.getPerson().getId() != 0L)
+                .collect(Collectors.groupingBy(GlucoseDataRecord::getPerson))
                 .values();
     }
 

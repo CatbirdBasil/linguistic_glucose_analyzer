@@ -13,4 +13,14 @@ public enum Distribution {
     Distribution(long id) {
         this.id = id;
     }
+
+    public static Distribution valueOf(long id) {
+        for (Distribution distr : values()) {
+            if (distr.id == id) {
+                return distr;
+            }
+        }
+
+        return null;
+    }
 }
