@@ -49,7 +49,7 @@ create table Distribution (
 create table Glucose_Data_Record (
    id                   SERIAL,
    person_id            INT4                 not null,
-   record_time          DATE                 not null,
+   record_time          timestamp            not null,
    record_type_id       INT4                 not null,
    value                INT4                 not null,
    constraint PK_GLUCOSE_DATA_RECORD primary key (id)
@@ -97,10 +97,10 @@ create table "User" (
    id                   SERIAL,
    person_id            INT4                 not null,
    login                CHAR(64)             not null,
-   password             CHAR(256)            not null,
+   password             CHAR(60)             not null,
    salt                 CHAR(64)             not null,
    email                CHAR(256)            not null,
-   registration_date    DATE                 not null,
+   registration_date    timestamp            not null,
    is_email_verified    BOOL                 not null,
    constraint PK_USER primary key (id)
 );

@@ -9,16 +9,13 @@ import java.sql.Timestamp;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "User")
+@Table(name = "`User`")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private long id;
-//
-//    @Column(name = "person_id", nullable = false)
-//    private long personId;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id")
@@ -30,6 +27,9 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "salt", nullable = false)
+    private String salt;
+
     @Column(name = "email", nullable = false)
     private String email;
 
@@ -37,6 +37,16 @@ public class User {
     private Timestamp registrationDate;
 
     @Column(name = "is_email_verified", nullable = false)
-    private String isEmailVerified;
+    private Boolean isEmailVerified;
+
+    public User(Person person, String login, String password, String email, Timestamp registrationDate) {
+        this.person = person;
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.registrationDate = registrationDate;
+        this.isEmailVerified = false;
+        this.salt = "";
+    }
 }
 

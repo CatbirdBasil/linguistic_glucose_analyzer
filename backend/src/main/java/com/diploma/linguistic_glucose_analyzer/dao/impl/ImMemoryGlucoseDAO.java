@@ -25,4 +25,9 @@ public class ImMemoryGlucoseDAO implements ExtraGlucoseDAO {
 
         return records.get(personId);
     }
+
+    @Override
+    public List<GlucoseDataRecord> getRecordsByUser(long userId) {
+        return null;
+    }
 }

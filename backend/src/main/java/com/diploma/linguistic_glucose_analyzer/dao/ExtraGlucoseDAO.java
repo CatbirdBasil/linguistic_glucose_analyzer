@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ExtraGlucoseDAO {
     List<GlucoseDataRecord> getRecordsByPerson(long personId);
+    List<GlucoseDataRecord> getRecordsByUser(long userId);
 }

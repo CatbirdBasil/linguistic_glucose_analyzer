@@ -1,5 +1,6 @@
 package com.diploma.linguistic_glucose_analyzer.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ public class GlucoseDataRecord {
 //    @Column(name = "person_id", nullable = false)
 //    private long personId;
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id")
     private Person person;

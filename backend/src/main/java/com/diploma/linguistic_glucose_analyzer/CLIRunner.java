@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -21,10 +22,10 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Slf4j
-@SpringBootApplication(exclude = { //
-        DataSourceAutoConfiguration.class, //
-        DataSourceTransactionManagerAutoConfiguration.class, //
-        HibernateJpaAutoConfiguration.class })
+//@SpringBootApplication(exclude = { //
+//        DataSourceAutoConfiguration.class, //
+//        DataSourceTransactionManagerAutoConfiguration.class, //
+//        HibernateJpaAutoConfiguration.class })
 public class CLIRunner implements CommandLineRunner {
 
     @Autowired
@@ -86,6 +87,7 @@ public class CLIRunner implements CommandLineRunner {
         SpringApplication.run(CLIRunner.class, args);
     }
 
+    @Lazy
     @Autowired
     private TestService testService;
 
@@ -95,7 +97,7 @@ public class CLIRunner implements CommandLineRunner {
         int bufferLength = 1;
         log.debug("Test for chain length = {} and buffer length = {}", chainLength, bufferLength);
 //        testService.testPrediction(chainLength, bufferLength);
-        testService.test3();
+        testService.test4();
 
 //        chainLength = 6;
 //        bufferLength = 1;

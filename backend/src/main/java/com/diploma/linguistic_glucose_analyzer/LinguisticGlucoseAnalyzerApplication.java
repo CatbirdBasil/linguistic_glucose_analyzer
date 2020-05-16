@@ -17,11 +17,10 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-//@SpringBootApplication
-//@EnableAutoConfiguration(exclude = { //
-//        DataSourceAutoConfiguration.class, //
-//        DataSourceTransactionManagerAutoConfiguration.class, //
-//        HibernateJpaAutoConfiguration.class })
+@SpringBootApplication(exclude = { //
+        DataSourceAutoConfiguration.class, //
+        DataSourceTransactionManagerAutoConfiguration.class, //
+        HibernateJpaAutoConfiguration.class })
 public class LinguisticGlucoseAnalyzerApplication {
 
     @Autowired

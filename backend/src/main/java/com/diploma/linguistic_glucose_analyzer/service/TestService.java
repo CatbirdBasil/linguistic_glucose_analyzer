@@ -12,6 +12,7 @@ import com.diploma.linguistic_glucose_analyzer.service.matrix.PredictionMatrixFa
 import com.diploma.linguistic_glucose_analyzer.service.matrix.model.PredictionMatrix;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 import static com.diploma.linguistic_glucose_analyzer.constants.LinguisticChainConstants.*;
 
+@Lazy
 @Slf4j
 @Service
 public class TestService {
@@ -370,7 +372,42 @@ public class TestService {
                 log.debug(glucoseMeasuresChain);
             }
 
-            List<GlucoseDataRecord> dbRecords = glucoseService.getAll();
+            List<GlucoseDataRecord> dbRecords = glucoseService.getRecordsByPerson(person.getId());
+            log.debug("dbRecords = {}", dbRecords);
+        }
+    }
+
+    public void test4() {
+        Person person = personService.getById(1L);
+
+        List<GlucoseDataRecord> allFilteredGlucoseRecords = new ArrayList<>();
+
+        int lessThanPersons = 0;
+        for (int i = 1; i <= 1; i++) {
+//        for (int i = 32; i <= 34; i++) {
+            List<GlucoseDataRecord> records = glucoseFileDAO.getRecords(fileBaseName + getFileNumber(i));
+
+            for (RecordFilter filter : filterProvider.getFilters()) {
+                records = filter.filter(records);
+            }
+
+            for (GlucoseDataRecord record : records) {
+                record.setPerson(person);
+            }
+
+            allFilteredGlucoseRecords.addAll(records);
+            glucoseService.saveAll(allFilteredGlucoseRecords);
+
+            String glucoseMeasuresChain = linguisticChainService.getChain(records, USED_ALPHABET);
+
+            if ("".equals(glucoseMeasuresChain)) {
+//                log.debug("LESS THEN 4 MES/DAY for {} file", i);
+                lessThanPersons++;
+            } else {
+                log.debug(glucoseMeasuresChain);
+            }
+
+            List<GlucoseDataRecord> dbRecords = glucoseService.getRecordsByPerson(person.getId());
             log.debug("dbRecords = {}", dbRecords);
         }
     }
