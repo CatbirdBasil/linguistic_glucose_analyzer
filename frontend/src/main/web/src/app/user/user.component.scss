@@ -1,0 +1,39 @@
+.card-content {
+  margin-top: 10px;
+  margin-left: 50px;
+  padding: 5px;
+}
+.content-width {
+  width: 100%;
+}
+.tab-content.card{
+  border: 0;
+}
+.hover-block:hover {
+  background: #2980b9;
+  color: #ffffff;
+}
+.hover-block.active {
+  background: #2980b9;
+  color: #ffffff;
+}
+
+.container, .grid-container {
+  padding: 0;
+  border-radius: 5px;
+  margin-top: 20px;
+  background-color: white;
+  height: auto;
+}
+
+mat-tab {
+  font-weight: bolder;
+}
+
+.tabBorderPadding {
+  padding: 25px 0 25px 0;
+}
+
+.generateButton {
+  bottom: 0;
+}

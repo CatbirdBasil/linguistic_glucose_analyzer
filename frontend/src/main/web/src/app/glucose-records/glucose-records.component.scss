@@ -1,0 +1,205 @@
+.container, .grid-container {
+  padding: 0;
+  border-radius: 15px;
+  margin-top: 20px;
+  //border: 30px solid #e7e6f7;
+  border: 30px solid #ffdfdf;
+  //background-color: #E7E6F7;
+  background-color: #ffdfdf;
+  height: auto;
+}
+
+.noPadding {
+  padding: 0px !important;
+}
+
+.content-width {
+  width: 100%;
+}
+
+.headerCard {
+  border-bottom-right-radius: 5px !important;
+  border-top-right-radius: 5px !important;
+  border-bottom-left-radius: 0px !important;
+  border-top-left-radius: 0px !important;
+  //border-radius: 15px !important;
+}
+
+.roundedCard {
+  border-radius: 5px !important;
+}
+
+.buyButton {
+  bottom: 0;
+}
+
+.row {
+  margin: 0;
+}
+
+.myHeaderText {
+  //font-size: 2.5vw;
+  font-size: 30px;
+}
+
+.myText {
+  font-size: 25px;
+}
+
+.descriptionText {
+  font-size: 20px;
+}
+
+.right {
+  float: right;
+  background-color: #2E294E !important;
+}
+
+div {
+  padding: 0;
+}
+
+.mainImage {
+  border-bottom-left-radius: 5px !important;
+  border-top-left-radius: 5px !important;
+  min-height: 27em;
+  width: 100%;
+  //border-radius: 15px;
+}
+
+
+.star {
+  position: relative;
+  display: inline-block;
+  font-size: 3rem;
+  color: #d3d3d3;
+}
+
+.full {
+  color: yellow;
+}
+
+.half {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  color: yellow;
+}
+
+.greyComment {
+  //background-color: #E9DDED;
+  background-color: #F7F7F7;
+}
+
+.commentSection {
+  padding-bottom: 0;
+}
+
+.commentFooter {
+  border-bottom-right-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+}
+
+.star {
+  position: relative;
+  display: inline-block;
+  font-size: 3rem;
+  color: #d3d3d3;
+}
+
+.smallerStar {
+  position: relative;
+  display: inline-block;
+  font-size: 2rem;
+  color: #d3d3d3;
+}
+
+.full {
+  color: #2E294E;
+}
+
+.half {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  color: #2E294E;
+}
+
+
+//.pagination .page-item .page-link {
+//  background-color: #fd9899 !important;
+//}
+
+.pagination .page-item.active .page-link {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  transition: all 0.2s linear;
+  border-radius: 0.125rem;
+  background-color: #fd9899 !important;
+  color: #fff;
+}
+
+.pagination .page-item .page-link {
+  border: 1px solid #dee2e6 !important;
+}
+
+.pagination {
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.table-cell {
+  border: 1px solid lightgrey;
+}
+
+.table-cell-left {
+  border-left-width: 2px;
+}
+
+.table-cell-right {
+  border-right-width: 2px;
+}
+
+.table-cell-top {
+  border-bottom: 1px solid lightgrey;
+}
+
+.table-column-header {
+  border: 1px solid lightgrey;
+  //background-color:  lightgrey;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-top-width: 2px;
+  text-align: center;
+  //color: #f58687;
+  font-size: 20px;
+  padding-top: 12px !important;
+}
+
+.table-column-header-left {
+  border-left-width: 2px;
+}
+
+.table-column-header-right {
+  border-right-width: 2px;
+}
+
+.deleteButton {
+  //background-color: #B5EF8A !important;
+  background-color: #ff4f4f !important;
+  //background-color: #5C5D8D !important;
+  // background-color: #62C370 !important;
+  // background-color: #2E294E !important;
+  vertical-align: bottom;
+}
+
+.addRecordCell {
+  padding-right: 17px !important;
+}
+
+.addRecordCell {
+  padding-right: 17px !important;
+}
+
+.addRecordButton {
+  width: 172px;
+}
