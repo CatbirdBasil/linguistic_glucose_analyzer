@@ -1,24 +1,32 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
-
 export const environment = {
-  production: false
+  production: false,
+  ws: 'http://localhost:8080/socket'
 };
 
-export const title = 'TripGod';
+export const title = 'D-Health';
 
-export const BASE_URL = "/";
-export const LOGIN_URL = BASE_URL + "api/auth/signin";
-export const REGISTRATION_URL = BASE_URL + "api/auth/signup";
+// export const API_URL = "http://localhost:51862/";
+export const API_URL = "http://localhost:8080/api/";
 
-export const GET_ALL_USERS = BASE_URL + "api/account/users";
+export const LOGIN_URL = API_URL + "auth/signin";
+export const REGISTRATION_URL = API_URL + "auth/signup";
 
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+export const GLUCOSE_ENDPOINT_URL = API_URL + "glucose/";
+export const GET_GLUCOSE_RECORDS_FOR_CURR_USER_URL = GLUCOSE_ENDPOINT_URL + "user/";
+
+//
+// export const TEST_CONTROLLER = API_URL + "api/test/";
+// export const USER_TESTS_URL = TEST_CONTROLLER + "user/";
+// export const SEARCH_TESTS_CONTAINING_NAME_URL = TEST_CONTROLLER + "search/";
+// export const SEARCH_TESTS_BY_GROUP_NAME_URL = TEST_CONTROLLER + "group/";
+//
+// export const QUESTION_CONTROLLER = API_URL + "api/question/";
+//
+// export const ANSWER_CONTROLLER = API_URL + "api/answer/";
+//
+// export const TEST_HISTORY_CONTROLLER = API_URL + "api/history/test/";
+// export const TEST_STATISTICS_URL = TEST_HISTORY_CONTROLLER + "statistic/";
+// export const TEST_STATISTICS_COMPLETION_URL = TEST_STATISTICS_URL + "completion/";
+// export const USER_TEST_HISTORY_URL = TEST_HISTORY_CONTROLLER + "user/";
+//
+// export const ANSWER_HISTORY_CONTROLLER = API_URL + "api/history/test/";

@@ -1,4 +1,7 @@
-<div class="container-fluid header-padding">
+<div class="container-fluid header-padding test">
   <app-header></app-header>
+  <div *ngIf="loading" class="loading-wrapper">
+    <mat-progress-bar mode="indeterminate" color="red"></mat-progress-bar>
+  </div>
   <router-outlet></router-outlet>
 </div>

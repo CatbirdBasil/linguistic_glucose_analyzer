@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MustMatch} from "../../helpers/must-mutch.validator";
-import {AuthService} from "../../shared/auth.service";
+import {AuthService} from "@services/auth.service";
 import {Router} from "@angular/router";
+import {MustMatch} from "@helpers/must-mutch.validator";
 
 @Component({
   selector: 'app-registration',
@@ -21,6 +21,9 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.authService.currentUserValue) {
+      this.router.navigate(['']);
+    }
     this.registrationForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(64)]],
       firstName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(40)]],
@@ -65,7 +68,7 @@ export class RegistrationComponent implements OnInit {
         this.loading = false;
         window.setTimeout(() => {
           this.error = '';
-        }, 5000);
+        }, 10000);
       }
     );
   }

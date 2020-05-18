@@ -1,3 +1,112 @@
-<p>
-  index works!
-</p>
+<div class="container mt-3">
+
+  <!-- <div class="row">
+    <div class="col-md-12">
+      <b >Search for tests</b>
+    </div>
+  </div> -->
+
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <app-glucose-records></app-glucose-records>
+<!--      <form [formGroup]="filterForm" (ngSubmit)="save()" *ngIf="authorized">-->
+<!--        <div class="row" style="margin: 0">-->
+
+<!--          <div class="col-md-12">-->
+
+<!--            <mat-card class="filter">-->
+<!--              <mat-card-header>-->
+<!--                <mat-card-title>Find best tests</mat-card-title>-->
+
+
+<!--              </mat-card-header>-->
+
+<!--              <div class="row">-->
+
+<!--                <div class="form-group col-md-10 px-2">-->
+<!--                  &lt;!&ndash; <label for="maxPrice">Maximum price</label> &ndash;&gt;-->
+<!--                  <input type="text"-->
+<!--                         class="form-control form-control-lg"-->
+<!--                         formControlName="name"-->
+<!--                         id="name"-->
+<!--                         placeholder="Search for best online tests..."-->
+<!--                         [ngClass]="{ 'is-invalid': submitted && filterForm.controls.name.errors}"/>-->
+
+<!--                  <div *ngIf="submitted && filterForm.controls.name.errors" class="invalid-input">-->
+<!--                    <div *ngIf="filterForm.controls.name.errors.minlength">Must be at least 1</div>-->
+<!--                    <div *ngIf="filterForm.controls.name.errors.maxlength">Must be not more then 100 symbols</div>-->
+<!--                  </div>-->
+
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Find button&ndash;&gt;-->
+<!--                <div class="col-md-2">-->
+<!--                  <button type="submit" mdbBtn class="my-auto styledButton FindTour text-coloured"-->
+<!--                          color="indigo" mdbWavesEffect>SEARCH-->
+<!--                    <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>-->
+<!--                  </button>-->
+<!--                </div>-->
+
+<!--              </div>-->
+<!--            </mat-card>-->
+
+<!--          </div>-->
+
+<!--        </div>-->
+<!--      </form>-->
+
+
+    </div>
+  </div>
+
+</div>
+
+
+<!--<div class="container">-->
+
+<!--  <div class="row mb-3" *ngIf="!nothingFound">-->
+
+<!--    <div class="col-md-6 mt-3" *ngFor="let test of tests; index as i">-->
+<!--      <mat-card class="testCard">-->
+<!--        <mat-card-header>-->
+<!--          <mat-card-title>{{test.title}}</mat-card-title>-->
+<!--          <mat-card-subtitle>{{test.group.name}}</mat-card-subtitle>-->
+<!--        </mat-card-header>-->
+
+<!--        <mat-card-content class="mb-0">-->
+
+<!--          &lt;!&ndash;<div class="row">&ndash;&gt;-->
+<!--          &lt;!&ndash;<p style="margin-bottom: 0"><b>Topic:</b> {{test.group.name}}</p>&ndash;&gt;-->
+<!--          &lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--          &lt;!&ndash;<div class="row">&ndash;&gt;-->
+<!--          &lt;!&ndash;<p style="margin-bottom: 0"><b>  Description: </b> {{test.text}}</p>&ndash;&gt;-->
+<!--          &lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--          {{test.text}}-->
+
+<!--        </mat-card-content>-->
+<!--        <mat-card-actions class="mt-0" align="end">-->
+
+<!--          &lt;!&ndash;<i class="fas fa-check-circle">{{testStatistics[i].numberOfCompletions}}</i>&ndash;&gt;-->
+<!--          &lt;!&ndash;<a routerLink="/test/{{test.id}}">&ndash;&gt;-->
+<!--          &lt;!&ndash;<button mat-stroked-button class="right" mdbBtn color="info" mdbWavesEffect&ndash;&gt;-->
+<!--          &lt;!&ndash;(click)=this.navigateToTestPage(trip.id)>&ndash;&gt;-->
+<!--          &lt;!&ndash;View details&ndash;&gt;-->
+<!--          &lt;!&ndash;</button>&ndash;&gt;-->
+<!--          <button class="mt-0 pt-0" mat-button (click)=this.navigateToTestPage(test.id)>-->
+<!--            View details-->
+<!--          </button>-->
+<!--          &lt;!&ndash;</a>&ndash;&gt;-->
+
+<!--        </mat-card-actions>-->
+<!--      </mat-card>-->
+<!--    </div>-->
+
+<!--  </div>-->
+
+<!--  <div class="row text-center align-items-center mx-auto" *ngIf="nothingFound">-->
+<!--    <h2>Nothing found(</h2>-->
+<!--  </div>-->
+
+<!--</div>-->

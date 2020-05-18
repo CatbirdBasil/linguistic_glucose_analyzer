@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AuthService} from "@services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-password-recovery',
@@ -9,9 +11,12 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class PasswordRecoveryComponent implements OnInit {
   recoveryPasswordForm: FormGroup;
   submitted = false;
+  error = '';
+  loading = false;
 
-
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+              private router: Router,
+              private authService: AuthService) {
 
   }
 
@@ -31,6 +36,18 @@ export class PasswordRecoveryComponent implements OnInit {
       return;
     }
 
-    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.recoveryPasswordForm.value))
+    this.loading = true;
+
+    // this.authService.recoveryPassword(this.recoveryPasswordForm.controls.email.value).subscribe(
+    //   () => {
+    //     this.router.navigate(['login']);
+    //   }, err => {
+    //     this.error = err;
+    //     this.loading = false;
+    //     window.setTimeout(() => {
+    //       this.error = '';
+    //     }, 5000);
+    //   }
+    // );
   }
 }

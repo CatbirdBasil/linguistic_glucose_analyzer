@@ -16,9 +16,9 @@ public class ExtraUserDAOImpl implements ExtraUserDAO {
     private EntityManager entityManager;
 
     private static final String LOGIN_QUERY_PARAM = "login";
-    private static final String LOGIN_QUERY_PARAM_NAME = ":login";
+    private static final String LOGIN_QUERY_PARAM_NAME = ":" + LOGIN_QUERY_PARAM;
     private static final String EMAIL_QUERY_PARAM = "email";
-    private static final String EMAIL_QUERY_PARAM_NAME = ":email";
+    private static final String EMAIL_QUERY_PARAM_NAME = ":" + EMAIL_QUERY_PARAM;
 
     private static final String GET_USER_BY_LOGIN_OF_EMAIL_QUERY =
             "FROM  User WHERE login = " + LOGIN_QUERY_PARAM_NAME + " OR email = " + EMAIL_QUERY_PARAM_NAME;

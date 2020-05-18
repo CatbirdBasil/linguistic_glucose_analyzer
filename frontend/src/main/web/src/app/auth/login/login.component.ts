@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AuthService} from "../../shared/auth.service";
+import {AuthService} from "@services/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {first} from "rxjs/operators";
 
@@ -24,6 +24,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.authService.currentUserValue) {
+      this.router.navigate(['']);
+    }
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],
@@ -47,13 +50,13 @@ export class LoginComponent implements OnInit {
     this.loading = true;
 
     const loginPayload = {
-      "usernameOrEmail": this.loginForm.controls.username.value,
-      "password": this.loginForm.controls.password.value
+      "usernameOrEmail": this.f.username.value,
+      "password": this.f.password.value
     };
 
     this.authService.login(loginPayload).pipe(first()).subscribe(
       () => {
-        this.router.navigate(['account']);
+        this.router.navigate(['']);
       }, err => {
         this.error = err;
         this.loading = false;

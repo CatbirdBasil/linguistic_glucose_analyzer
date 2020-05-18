@@ -1,4 +1,13 @@
 .forgot-link {
-  float: right
+  float: right;
+  color: gray;
 }
 
+.forgot-link:hover {
+  float: right;
+  color: blue;
+}
+
+img {
+  padding-left: 15px;
+}

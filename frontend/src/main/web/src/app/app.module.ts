@@ -9,31 +9,27 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IndexComponent} from './system/index/index.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 
-import {EditUserComponent} from './user/edit-user/edit-user.component';
-import {PasswordRecoveryComponent} from './auth/password-recovery/password-recovery.component';
 import {routing} from "./app.routing";
 import {UserComponent} from './user/user.component';
-import {JwtInterceptor} from "./helpers/jwt.interceptor";
-import {HttpErrorInterceptor} from "./helpers/HttpError.interceptor";
-import {UserSummaryComponent} from './user/user-summary/user-summary.component';
-import {UserUsersComponent} from './user/user-users/user-users.component';
-import {UserBundlesComponent} from './user/user-bundles/user-bundles.component';
-import {UserTripsComponent} from './user/user-trips/user-trips.component';
-import {UserServicesComponent} from './user/user-services/user-services.component';
-import {UserDiscountsComponent} from './user/user-discounts/user-discounts.component';
+import {JwtInterceptor} from "@helpers/jwt.interceptor";
+import {HttpErrorInterceptor} from "@helpers/HttpError.interceptor";
+import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {DashboardComponent} from './user/dashboard/dashboard.component';
-import {MatButtonModule, MatCardModule, MatGridListModule, MatIconModule, MatMenuModule} from '@angular/material';
 import {LayoutModule} from '@angular/cdk/layout';
 
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
 
-import {ToTitlePipe} from "./system/data-table/toTitle.pipe";
-import {FormatCellPipe} from "./system/data-table/formatCell.pipe";
-import {DataTableComponent} from "./system/data-table/data-table.component";
 import {RegistrationSuccessfulComponent} from "./auth/registration/registration-successful/registration-successful.component";
-import {MaterialModule} from "./helpers/material.module";
+import {MaterialModule} from "@helpers/material.module";
 import {CurrencyPipe, DatePipe} from "@angular/common";
+
+import {AgmCoreModule} from '@agm/core';
+import {NgSelectModule} from '@ng-select/ng-select';
+import {ShareDataService} from "@services/share-data.service";
+import {SnackbarComponent} from './model/snackbar/snackbar.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { GlucoseRecordsComponent } from './glucose-records/glucose-records.component';
+import {JwPaginationComponent} from "jw-angular-pagination";
 
 @NgModule({
   declarations: [
@@ -43,19 +39,10 @@ import {CurrencyPipe, DatePipe} from "@angular/common";
     RegistrationComponent,
     IndexComponent,
     UserComponent,
-    EditUserComponent,
-    PasswordRecoveryComponent,
-    UserSummaryComponent,
-    UserUsersComponent,
-    UserBundlesComponent,
-    UserTripsComponent,
-    UserServicesComponent,
-    UserDiscountsComponent,
-    DashboardComponent,
     RegistrationSuccessfulComponent,
-    DataTableComponent,
-    FormatCellPipe,
-    ToTitlePipe,
+    SnackbarComponent,
+    GlucoseRecordsComponent,
+    JwPaginationComponent
   ],
   imports: [
     BrowserModule,
@@ -64,25 +51,28 @@ import {CurrencyPipe, DatePipe} from "@angular/common";
     ReactiveFormsModule,
     routing,
     BrowserAnimationsModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
     LayoutModule,
-    MDBBootstrapModule,
-    MDBBootstrapModule,
+    MDBBootstrapModule.forRoot(),
     MaterialModule,
+    AngularMultiSelectModule,
+    NgbModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAcaaElwdGQIGIRnr2Ay1Hl9BuqEwDpjeY'
+    }),
+    NgbModule,
+    NgSelectModule
   ],
   providers: [
     Title,
     CurrencyPipe,
     DatePipe,
+    ShareDataService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true},
   ],
   bootstrap: [AppComponent],
-  entryComponents: []
+  entryComponents: [SnackbarComponent]
 })
 export class AppModule {
 }
+

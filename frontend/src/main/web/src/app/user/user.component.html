@@ -1,64 +1,16 @@
 <div class="container">
-  <ul class="nav nav-tabs md-tabs" id="myTabMD" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link active hover-block" id="summary-tab-md" data-toggle="tab" href="#summary-md" role="tab"
-         aria-controls="summary-md"
-         aria-selected="true">Summary</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link hover-block" id="users-tab-md" data-toggle="tab" href="#users-md" role="tab"
-         aria-controls="users-md"
-         aria-selected="false">Users</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link hover-block" id="bundles-tab-md" data-toggle="tab" href="#bundles-md" role="tab"
-         aria-controls="bundles-md"
-         aria-selected="false">Bundles</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link hover-block" id="trips-tab-md" data-toggle="tab" href="#trips-md" role="tab"
-         aria-controls="trips-md"
-         aria-selected="false">Trips</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link hover-block" id="services-tab-md" data-toggle="tab" href="#services-md" role="tab"
-         aria-controls="services-md"
-         aria-selected="false">Services</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link hover-block" id="discounts-tab-md" data-toggle="tab" href="#discounts-md" role="tab"
-         aria-controls="discounts-md"
-         aria-selected="false">Discounts</a>
-    </li>
-    <li class="nav-item">
-      <a aria-controls="dashboards-md" aria-selected="false" class="nav-link hover-block" data-toggle="tab"
-         href="#dashboards-md"
-         id="dashboards-tab-md"
-         role="tab">Dashboards</a>
-    </li>
-  </ul>
-  <div class="tab-content card pt-5" id="myTabContentMD">
-    <div class="tab-pane fade show active" id="summary-md" role="tabpanel" aria-labelledby="summary-tab-md">
-      <app-user-summary></app-user-summary>
-    </div>
-    <div class="tab-pane fade" id="users-md" role="tabpanel" aria-labelledby="users-tab-md">
-      <app-user-users></app-user-users>
-    </div>
-    <div class="tab-pane fade" id="bundles-md" role="tabpanel" aria-labelledby="bundles-tab-md">
-      <app-user-bundles></app-user-bundles>
-    </div>
-    <div class="tab-pane fade" id="trips-md" role="tabpanel" aria-labelledby="trips-tab-md">
-      <app-user-trips></app-user-trips>
-    </div>
-    <div class="tab-pane fade" id="services-md" role="tabpanel" aria-labelledby="services-tab-md">
-      <app-user-services></app-user-services>
-    </div>
-    <div class="tab-pane fade" id="discounts-md" role="tabpanel" aria-labelledby="discounts-tab-md">
-      <app-user-discounts></app-user-discounts>
-    </div>
-    <div aria-labelledby="dashboards-tab-md" class="tab-pane fade" id="dashboards-md" role="tabpanel">
-      <app-dashboard></app-dashboard>
-    </div>
-    <div class="offset-3"></div>
-  </div>
+
+  <mat-tab-group [(selectedIndex)]="indexOfTabToOpen">
+<!--    <mat-tab label="Your tests">-->
+<!--      <div class="tabBorderPadding">-->
+<!--        <app-user-tests></app-user-tests>-->
+<!--      </div>-->
+<!--    </mat-tab>-->
+<!--    <mat-tab label="Test history">-->
+<!--      <div class="tabBorderPadding">-->
+<!--        <app-user-test-history></app-user-test-history>-->
+<!--      </div>-->
+<!--    </mat-tab>-->
+  </mat-tab-group>
+
 </div>

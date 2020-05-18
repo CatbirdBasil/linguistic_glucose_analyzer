@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 @Component({
   selector: 'app-registration-successful',
   templateUrl: './registration-successful.component.html',
-  styleUrls: ['./registration-successful.component.css']
+  styleUrls: ['./registration-successful.component.scss']
 })
 
 export class RegistrationSuccessfulComponent implements OnInit {
@@ -15,7 +15,7 @@ export class RegistrationSuccessfulComponent implements OnInit {
   ngOnInit() {
     window.setTimeout(() => {
       this.router.navigate(['login']);
-    }, 5000);
+    }, 10000);
   }
 
 }

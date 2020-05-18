@@ -76,14 +76,14 @@
                    class="form-control"
                    placeholder="you@example.com"
                    formControlName="email"
-                   [ngClass]="{ 'is-invalid': submitted && f.email.invalid }"
+                   [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
             />
 
             <!-- validation of input -->
             <div *ngIf="submitted && f.email.errors" class="invalid-input">
               <div *ngIf="f.email.errors.required">Field is required</div>
               <div *ngIf="f.email.errors.email">Email is not valid</div>
-              <div *ngIf="f.lastName.errors.maxlength">Email name must be less than 128 characters long</div>
+              <div *ngIf="f.email.errors.maxlength">Email name must be less than 128 characters long</div>
             </div>
           </div>
 
@@ -130,7 +130,7 @@
           </div>
 
           <div>
-            <button class="btn btn-success btn-wide">
+            <button class="btn btn-wide styledButton" color="primary" mdbBtn mdbWavesEffect>
               Sign up
               <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
             </button>
@@ -138,6 +138,7 @@
           </div>
         </form>
       </div>
+      <img alt="javaImg" class="img-brand" src="../../../assets/images/java.png">
     </div>
     <div class="offset-3"></div>
   </div>

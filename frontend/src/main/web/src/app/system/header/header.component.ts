@@ -4,11 +4,16 @@ import {AuthService} from "../../shared/auth.service";
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
+  username;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
+    authService.getUsername().subscribe(
+      data => this.username = data
+    )
+  }
 
   isLoggedIn() {
     return this.authService.currentUserValue !== null;

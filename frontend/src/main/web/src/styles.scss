@@ -1,5 +1,8 @@
-//@import url(../node_modules/bootstrap/dist/css/bootstrap.min.css);
-//@import url(../node_modules/font-awesome/css/font-awesome.css);
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+ng-select.invalid-select > div {
+  border-color: red !important;
+}
 
 .container-layout {
   margin-top: 30px;
@@ -31,7 +34,125 @@ html, body {
   height: 100%;
 }
 
+//
+//@font-face {
+//  font-family: 'Nexa';
+//  src: local('Nexa Light'), local('NexaLight'), url('assets/fonts/nexalight.woff2') format('woff2'), url('assets/fonts/nexalight.woff') format('woff'), url('assets/fonts/nexalight.ttf') format('truetype');
+//  font-weight: 300;
+//  font-style: normal;
+//}
+//
+//@font-face {
+//  font-family: 'Nexa';
+//  src: local('Nexa Bold'), local('NexaBold'), url('assets/fonts/nexabold.woff2') format('woff2'), url('assets/fonts/nexabold.woff') format('woff'), url('assets/fonts/nexabold.ttf') format('truetype');
+//  font-weight: 700;
+//  font-style: normal;
+//}
+
+.text-coloured {
+  //font-family: 'Nexa' !important;
+  //color: #5C5D8D !important;
+  //color: #1b1b36 !important;
+  color: #171717 !important;
+}
+
+.styledButton {
+  //background-color: #B5EF8A !important;
+  background-color: #fd9899 !important;
+  //background-color: #5C5D8D !important;
+  // background-color: #62C370 !important;
+  // background-color: #2E294E !important;
+  vertical-align: bottom;
+}
+
+.redButton {
+  background-color: #FE4A49 !important;
+}
+
 body {
   margin: 0;
+  //color: #4D7FDF;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  //font-family: 'Nexa' !important;
+
+  //background-color: #ffffff;
+  //background-color: #E1EDFD;
+  // background-color: #E7E6F7;
+  background-color: #F4F4F9;
+  //background-image: url("https://www.transparenttextures.com/patterns/purty-wood.png");
+
+  // background-image: url("https://www.transparenttextures.com/patterns/skulls.png");
+  // background-image: url("https://www.transparenttextures.com/patterns/skulls.png");
+  // background-image: url("https://www.transparenttextures.com/patterns/skulls.png");
+  //background-image: url("assets/images/concrete_seamless.png");
+  //background-image: url("assets/images/seigaiha.png");
+  //background-repeat: repeat;
+  //http://ru.retinex.net/Image.aspx?r=636878503845108384
+  ///background-image: url("assets/images/travel_bg3.jpg");
+  ///background-repeat: repeat;
+
+  //background-image: url("https://www.transparenttextures.com/patterns/gplay.png");
+  //background-image: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/intermediary/f/a82ab7c5-62e0-47a8-b8eb-d8d59dc80174/d1lq596-79507a03-6e02-4278-8779-11f002a37991.png");
+  //background-repeat: repeat;
+
+  /*background-color: #224;
+  background-image: url(https://www.transparenttextures.com/patterns/shattered.png%22);*/
+  /*background-color: #ffffff;
+  background-image: url("https://www.transparenttextures.com/patterns/gplay.png");*/
+  /*background-color: #C8E0F4;
+  background-image: url("https://www.transparenttextures.com/patterns/skulls.png");*/
+
+}
+
+/* modal windows */
+
+.modal-wide {
+  width: 600px;
+}
+
+.modal-backdrop {
+  /* bug fix - no overlay */
+  display: none;
+}
+
+.mw-85 {
+  max-width: 85%;
+}
+
+.textarea-layout {
+  resize: none !important;
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+.textarea-border {
+  border: 1px solid #999;
+}
+
+.chat-container {
+  padding: 0;
+  border-radius: 5px;
+  margin-top: 20px;
+  background-color: white;
+  height: auto;
+}
+
+.chat-list {
+  padding: 5px 20px 5px 20px;
+  position: relative;
+  height: 500px;
+  overflow-y: scroll;
+}
+
+.userPic {
+  width: 35px;
+  height: 35px;
+  border: 1px solid #2E294E;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.glucoseValue {
+  font-size: 17px;
 }

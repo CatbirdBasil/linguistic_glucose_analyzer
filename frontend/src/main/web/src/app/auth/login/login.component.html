@@ -7,7 +7,6 @@
           <h2 class="card-title" align="center">Sign in</h2>
           <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 
-          <!-- Username -->
           <div class="form-group">
             <label>Username</label>
             <input type="text"
@@ -46,7 +45,7 @@
           </div>
 
           <div>
-            <button class="btn btn-success btn-wide">
+            <button class="btn btn-wide styledButton" color="primary" mdbBtn mdbWavesEffect>
               Sign in
               <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
             </button>

@@ -3,8 +3,10 @@ package com.diploma.linguistic_glucose_analyzer.controller;
 import com.diploma.linguistic_glucose_analyzer.auth.CurrentUser;
 import com.diploma.linguistic_glucose_analyzer.auth.UserPrincipal;
 import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataRecord;
+import com.diploma.linguistic_glucose_analyzer.model.Person;
 import com.diploma.linguistic_glucose_analyzer.model.User;
 import com.diploma.linguistic_glucose_analyzer.service.GlucoseService;
+import com.diploma.linguistic_glucose_analyzer.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +17,15 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/glucose")
-@CrossOrigin(":4200")
+@CrossOrigin("http://localhost:4200")
 @Slf4j
 public class GlucoseController {
 
     @Autowired
     private GlucoseService glucoseService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping()
     public ResponseEntity<?> getAllGlucoseRecords() {
@@ -50,6 +55,13 @@ public class GlucoseController {
 
     @PostMapping
     public ResponseEntity<?> createGlucoseRecord(@Valid @RequestBody GlucoseDataRecord record) {
+        Object potentialPrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (potentialPrincipal instanceof UserPrincipal) {
+            Person person = userService.getById(((UserPrincipal) potentialPrincipal).getId()).getPerson();
+            record.setPerson(person);
+        }
+
         return ResponseEntity.ok(glucoseService.save(record));
     }
 

@@ -9,7 +9,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/account/users")
-@CrossOrigin(":4200")
+@CrossOrigin("http://localhost:4200")
 public class UserController {
 
     @Autowired
