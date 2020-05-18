@@ -30,6 +30,7 @@ import {SnackbarComponent} from './model/snackbar/snackbar.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { GlucoseRecordsComponent } from './glucose-records/glucose-records.component';
 import {JwPaginationComponent} from "jw-angular-pagination";
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,9 @@ import {JwPaginationComponent} from "jw-angular-pagination";
       apiKey: 'AIzaSyAcaaElwdGQIGIRnr2Ay1Hl9BuqEwDpjeY'
     }),
     NgbModule,
-    NgSelectModule
+    NgSelectModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule
   ],
   providers: [
     Title,

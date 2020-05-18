@@ -1,22 +1,21 @@
-
 <!--<div class="row mt-3">-->
 <!--  <div class="container">-->
-    <div class="row descriptionText">
+<div class="row descriptionText">
 
-      <div class="col-md-12 py-3 card roundedCard">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="row px-5">
-              <b>Description:</b>
-            </div>
+  <div class="col-md-12 py-3 card roundedCard">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row px-5">
+          <b>Description:</b>
+        </div>
 
-            <div class="row px-4">
-              HERERE
-            </div>
-          </div>
+        <div class="row px-4">
+          HERERE
         </div>
       </div>
     </div>
+  </div>
+</div>
 
 <!--    <div class="row mt-3">-->
 <!--      <div class="col-md-12 pt-3 pb-0 card roundedCard pagDiv">-->
@@ -24,108 +23,199 @@
 <!--      </div>-->
 <!--    </div>-->
 
-    <div class="row mt-3">
-      <div class="col-md-12 pt-2 card  roundedCard">
+<div class="row mt-3">
+  <div class="col-md-12 pt-2 card  roundedCard">
 
-        <div class="row mt-1">
-          <div class="col-md-12 pt-1 pb-0 pagDiv">
-            <jw-pagination [items]="glucoseRecords" (changePage)="onChangePage($event)" [pageSize]="20"></jw-pagination>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-6 noPadding table-column-header table-column-header-left">
-            Time of measurement
-          </div>
-          <div class="col-md-3 noPadding table-column-header table-column-header-right">
-            Value (mg/dl)
-          </div>
-          <div class="col-md-3 noPadding table-cell-top addRecordCell">
-            <button class="btn styledButton float-right addRecordButton" color="pink" mdbBtn mdbWavesEffect>
-              Add record
-<!--              <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>-->
-            </button>
-          </div>
-        </div>
-
-
-        <div class="row">
-          <!--<b>&#45;&#45;Feedback placeholder&#45;&#45;</b>-->
-          <div class="col-md-12 noPadding" *ngFor="let record of onPageRecords; let i=index">
-
-            <div class="row" *ngIf="!(i % 2)">
-              <div class="col-md-12 noPadding">
-
-<!--                <div class="row">-->
-<!--                  <div class="col-md-12 pl-5">-->
-<!--                    <b class="mr-1" *ngIf="message.user != null">{{message.user.details.firstName}}-->
-<!--                      {{message.user.details.lastName}}</b>-->
-<!--                    <b class="mr-1" *ngIf="message.user == null">You </b>-->
-<!--                    <ngb-rating class="pl-2" [(rate)]="message.rating" [max]="5" [readonly]="true"></ngb-rating>-->
-<!--                  </div>-->
-<!--                </div>-->
-
-                <div class="row">
-                  <div class="col-md-6 pl-3 table-cell table-cell-left pt-3">
-                    {{record.eventTime | date: 'EEEE dd/MM/yyyy'}} at {{record.eventTime | date: 'HH:mm:ss'}}
-                  </div>
-                  <div class="col-md-2 pl-3 table-cell pt-3 glucoseValue">
-                    {{record.value}}
-                  </div>
-                  <div class="col-md-4 pt-1 pb-1 pl-3 table-cell table-cell-right">
-                    <button class="btn-sm deleteButton float-right" color="pink" mdbBtn mdbWavesEffect>
-                      Delete
-                      <!--              <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>-->
-                    </button>
-                    <button class="btn-sm styledButton float-right" color="pink" mdbBtn mdbWavesEffect>
-                      Edit
-                    </button>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            <div class="row greyComment" *ngIf="(i % 2)">
-              <div class="col-md-12 noPadding">
-
-<!--                <div class="row">-->
-<!--                  <div class="col-md-12 pl-5">-->
-<!--                    <b class="mr-1" *ngIf="message.user != null">{{message.user.details.firstName}}-->
-<!--                      {{message.user.details.lastName}}</b>-->
-<!--                    <b class="mr-1" *ngIf="message.user == null">You </b>-->
-<!--                    <ngb-rating class="pl-2" [(rate)]="message.rating" [max]="5" [readonly]="true"></ngb-rating>-->
-<!--                  </div>-->
-<!--                </div>-->
-
-                <div class="row">
-                  <div class="col-md-6 pl-3 table-cell table-cell-left pt-3">
-                    {{record.eventTime | date: 'EEEE dd/MM/yyyy'}} at {{record.eventTime | date: 'HH:mm:ss'}}
-                  </div>
-                  <div class="col-md-2 pl-3 table-cell pt-3 glucoseValue">
-                    {{record.value}}
-                  </div>
-                  <div class="col-md-4 pt-1 pb-1 pl-3 table-cell table-cell-right">
-                    <button class="btn-sm deleteButton float-right" color="pink" mdbBtn mdbWavesEffect>
-                      Delete
-                      <!--              <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>-->
-                    </button>
-                    <button class="btn-sm styledButton float-right" color="pink" mdbBtn mdbWavesEffect>
-                      Edit
-                    </button>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-        <div class="row greyComment commentFooter pb-3" *ngIf="!(glucoseRecords.length % 2)"></div>
-        <div class="row commentFooter pb-3" *ngIf="glucoseRecords.length % 2"></div>
+    <div class="row mt-1">
+      <div class="col-md-12 pt-1 pb-0 pagDiv">
+        <jw-pagination [items]="glucoseRecords" (changePage)="onChangePage($event)" [pageSize]="20"></jw-pagination>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-md-4 noPadding table-column-header table-column-header-left">
+        Time of measurement
+      </div>
+      <div class="col-md-2 noPadding table-column-header">
+        Value (mg/dl)
+      </div>
+      <div class="col-md-3 noPadding table-column-header table-column-header-right">
+        Info
+      </div>
+      <div *ngIf="!editedRecord" class="col-md-3 noPadding table-cell-top addRecordCell">
+        <button (click)="addRecord()" class="btn blueButton float-right addRecordButton" color="indigo" mdbBtn mdbWavesEffect>
+          Add record
+          <!--              <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>-->
+        </button>
+      </div>
+
+      <div *ngIf="editedRecord" class="col-md-3 noPadding table-cell-top addRecordCell">
+        <button disabled class="btn blueButton float-right addRecordButton" color="indigo" mdbBtn mdbWavesEffect>
+          Add record
+          <!--              <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>-->
+        </button>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <!--<b>&#45;&#45;Feedback placeholder&#45;&#45;</b>-->
+      <div class="col-md-12 noPadding" *ngFor="let record of onPageRecords; let i=index">
+
+        <div class="row" *ngIf="!(i % 2)">
+          <div class="col-md-12 noPadding">
+
+            <!--                <div class="row">-->
+            <!--                  <div class="col-md-12 pl-5">-->
+            <!--                    <b class="mr-1" *ngIf="message.user != null">{{message.user.details.firstName}}-->
+            <!--                      {{message.user.details.lastName}}</b>-->
+            <!--                    <b class="mr-1" *ngIf="message.user == null">You </b>-->
+            <!--                    <ngb-rating class="pl-2" [(rate)]="message.rating" [max]="5" [readonly]="true"></ngb-rating>-->
+            <!--                  </div>-->
+            <!--                </div>-->
+
+            <div class="row">
+              <ng-template [ngTemplateOutlet]="loadRecordTemplate(record)"
+                           [ngTemplateOutletContext]="{ $implicit: record}">
+              </ng-template>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row greyComment" *ngIf="(i % 2)">
+          <div class="col-md-12 noPadding">
+
+            <!--                <div class="row">-->
+            <!--                  <div class="col-md-12 pl-5">-->
+            <!--                    <b class="mr-1" *ngIf="message.user != null">{{message.user.details.firstName}}-->
+            <!--                      {{message.user.details.lastName}}</b>-->
+            <!--                    <b class="mr-1" *ngIf="message.user == null">You </b>-->
+            <!--                    <ngb-rating class="pl-2" [(rate)]="message.rating" [max]="5" [readonly]="true"></ngb-rating>-->
+            <!--                  </div>-->
+            <!--                </div>-->
+
+            <div class="row">
+              <ng-template [ngTemplateOutlet]="loadRecordTemplate(record)"
+                           [ngTemplateOutletContext]="{ $implicit: record}">
+              </ng-template>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <div class="row greyComment commentFooter pb-3" *ngIf="!(glucoseRecords.length % 2)"></div>
+    <div class="row commentFooter pb-3" *ngIf="glucoseRecords.length % 2"></div>
+  </div>
+</div>
+
+<ng-template #fineGlucoseInfo>
+  <div class="alert alert-success" role="alert">
+    Fine glucose
+  </div>
+</ng-template>
+
+<ng-template #hypoRisk>
+  <div class="alert alert-warning" role="alert">
+    Hypoglycemia risk
+  </div>
+</ng-template>
+
+<ng-template #hypoState>
+  <div class="alert  alert-danger" role="alert">
+    Hypoglycemic state
+  </div>
+</ng-template>
+
+<ng-template #hyperRisk>
+  <div class="alert alert-warning" role="alert">
+    Hyperglycemia risk
+  </div>
+</ng-template>
+
+<ng-template #hyperState>
+  <div class="alert alert-danger" role="alert">
+    Hyperglycemic state
+  </div>
+</ng-template>
+
+<ng-template #regularRow let-record>
+  <div class="col-md-4 pl-3 table-cell table-cell-left pt-3">
+    {{record.eventTime | date: 'EEEE dd/MM/yyyy'}} at {{record.eventTime | date: 'HH:mm:ss'}}
+  </div>
+  <div class="col-md-2 pl-3 table-cell pt-3 glucoseValue">
+    {{record.value}}
+  </div>
+  <div class="col-md-3 pl-3 table-cell">
+    <ng-template [ngTemplateOutlet]="loadInfoTemplate(record)"></ng-template>
+  </div>
+  <div class="col-md-3 pt-1 pb-1 pl-3 table-cell table-cell-right">
+    <button (click)="prepareForDeletion(record)" class="btn-sm deleteButton float-right" color="pink" mdbBtn mdbWavesEffect
+            data-toggle="modal" data-target="#modalConfirmDelete">
+      Delete
+      <!--              <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>-->
+    </button>
+    <button (click)="editRecord(record)" class="btn-sm blueButton float-right" color="pink" mdbBtn mdbWavesEffect>
+      Edit
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #editableRow>
+  <div class="col-md-4 pl-3 table-cell table-cell-left pt-2 pb-2">
+<!--    <input type="datetime-local" [ngModel]="editedRecord.eventTime | date:'yyyy-MM-ddTHH:mm'"-->
+<!--           (ngModelChange)="dateChanged($event)" class="form-control" />-->
+
+    <input [(ngModel)]="editedRecord.eventTime"
+           [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1" class="form-control" >
+    <owl-date-time #dtPicker1></owl-date-time>
+  </div>
+  <div class="col-md-2 pl-3 table-cell pt-2 pb-2 glucoseValue">
+    <input type="number" [(ngModel)]="editedRecord.value" class="form-control" />
+  </div>
+  <div class="col-md-3 pl-3 table-cell">
+    <ng-template [ngTemplateOutlet]="loadInfoTemplate(editedRecord)"></ng-template>
+  </div>
+  <div class="col-md-3 pt-1 pb-1 pl-3 table-cell table-cell-right">
+    <button (click)="cancel()" class="btn-sm deleteButton float-right" color="indigo" mdbBtn mdbWavesEffect>
+      Cancel
+      <!--              <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>-->
+    </button>
+    <button (click)="saveRecord()" class="btn-sm blueButton float-right" color="indigo" mdbBtn mdbWavesEffect>
+      Save
+    </button>
+  </div>
+</ng-template>
+
+<!--Modal: modalConfirmDelete-->
+<div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+    <!--Content-->
+    <div class="modal-content text-center">
+      <!--Header-->
+      <div class="modal-header d-flex justify-content-center">
+        <p class="heading">Are you sure?</p>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <i class="fas fa-times fa-4x animated rotateIn"></i>
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer flex-center">
+        <a (click)="deleteRecord()" type="button" class="btn deleteButton btn-indigo" data-dismiss="modal">Yes</a>
+        <a type="button" class="btn blueButton btn-indigo waves-effect" data-dismiss="modal">No</a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<!--Modal: modalConfirmDelete-->
 
 <!--<input type="button" value="Добавить" class="btn btn-default" (click)="addUser()" />-->
 <!--<table class="table table-striped">-->

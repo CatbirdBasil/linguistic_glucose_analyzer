@@ -1,6 +1,7 @@
 package com.diploma.linguistic_glucose_analyzer.service.impl;
 
 import com.diploma.linguistic_glucose_analyzer.dao.GlucoseDAO;
+import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataCode;
 import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataRecord;
 import com.diploma.linguistic_glucose_analyzer.service.GlucoseService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,5 +31,11 @@ public class GlucoseServiceImpl extends AbstractCRUDService<GlucoseDataRecord, L
     @Override
     public List<GlucoseDataRecord> getRecordsByUser(long userId) {
         return glucoseDAO.getRecordsByUser(userId);
+    }
+
+    @Override
+    public GlucoseDataRecord save(GlucoseDataRecord entity) {
+        entity.setCode(GlucoseDataCode.UNSPECIFIED_BLOOD_GLUCOSE_MEASUREMENT);
+        return super.save(entity);
     }
 }

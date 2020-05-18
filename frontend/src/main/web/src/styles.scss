@@ -1,4 +1,5 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
+@import "~ng-pick-datetime/assets/style/picker.min.css";
 
 ng-select.invalid-select > div {
   border-color: red !important;
@@ -78,7 +79,8 @@ body {
   //background-color: #ffffff;
   //background-color: #E1EDFD;
   // background-color: #E7E6F7;
-  background-color: #F4F4F9;
+  background-color: #9FCBCB;
+  //background-color: #F4F4F9;
   //background-image: url("https://www.transparenttextures.com/patterns/purty-wood.png");
 
   // background-image: url("https://www.transparenttextures.com/patterns/skulls.png");

@@ -67,6 +67,13 @@ public class GlucoseController {
 
     @PutMapping
     public ResponseEntity<?> updateGlucoseRecord(@Valid @RequestBody GlucoseDataRecord record) {
+        Object potentialPrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (potentialPrincipal instanceof UserPrincipal) {
+            Person person = userService.getById(((UserPrincipal) potentialPrincipal).getId()).getPerson();
+            record.setPerson(person);
+        }
+
         glucoseService.save(record);
         return ResponseEntity.ok().build();
     }
