@@ -1,61 +1,68 @@
 package com.diploma.linguistic_glucose_analyzer.service.impl;
 
-import com.diploma.linguistic_glucose_analyzer.dao.PredictionDAO;
-import com.diploma.linguistic_glucose_analyzer.model.Prediction;
+import com.diploma.linguistic_glucose_analyzer.dto.PossibleFutureGlucoseDTO;
+import com.diploma.linguistic_glucose_analyzer.dto.SymbolBounds;
+import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataRecord;
+import com.diploma.linguistic_glucose_analyzer.service.GlucoseService;
+import com.diploma.linguistic_glucose_analyzer.service.LinguisticChainService;
 import com.diploma.linguistic_glucose_analyzer.service.PredictionService;
+import com.diploma.linguistic_glucose_analyzer.service.matrix.PredictionMatrixFactory;
+import com.diploma.linguistic_glucose_analyzer.service.matrix.model.PredictionMatrix;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
 public class PredictionServiceImpl implements PredictionService {
+
+    private static final int CHAIN_LENGTH = 1;
+    private static final int RECORDS_TO_PREDICT = 5;
+
+    private GlucoseService glucoseService;
+    private LinguisticChainService linguisticChainService;
+    private PredictionMatrixFactory predictionMatrixFactory;
+
     @Autowired
-    private PredictionDAO predictionDAO;
-
-    @Override
-    public List<Prediction> checkPrediction(String linguisticChain) {
-        var predictions = predictionDAO.getAllPredictions();
-        return checkPrediction(predictions, linguisticChain);
+    public PredictionServiceImpl(GlucoseService glucoseService, LinguisticChainService linguisticChainService, PredictionMatrixFactory predictionMatrixFactory) {
+        this.glucoseService = glucoseService;
+        this.linguisticChainService = linguisticChainService;
+        this.predictionMatrixFactory = predictionMatrixFactory;
     }
 
     @Override
-    public List<Prediction> checkPrediction(String linguisticChain, int length) {
-        var predictions = predictionDAO.getPredictionsOfLength(length);
-        return checkPrediction(predictions, linguisticChain);
-    }
+    public PossibleFutureGlucoseDTO getPossibleFutureGlucoseValueForUser(long userId) {
+        List<GlucoseDataRecord> allRecords = glucoseService.getAll();
+        PredictionMatrix predictionMatrix = predictionMatrixFactory.getMatrix(allRecords, CHAIN_LENGTH);
 
-    @Override
-    public List<Prediction> checkPrediction(String linguisticChain, List<Prediction> predictions) {
-        return checkPrediction(predictions, linguisticChain);
-    }
+        List<GlucoseDataRecord> userRecords = glucoseService.getRecordsByUser(userId);
+        String userRecordsChain = linguisticChainService.getChain(userRecords);
+        char lastSymbol = userRecordsChain.charAt(userRecordsChain.length() - 1);
 
-    //TODO Improve performance
-    private List<Prediction> checkPrediction(List<Prediction> checkedPredictions, String linguisticChain) {
-        List<Prediction> matchedPredictions = new ArrayList<>();
+        for (int i = 0; i < RECORDS_TO_PREDICT; i++) {
+            Map<Character, Double> appearanceChances = predictionMatrix.getAppearanceChances().get(String.valueOf(lastSymbol));
 
-        for (Prediction prediction : checkedPredictions) {
-            int lengthDifference = linguisticChain.length() - prediction.getLinguisticChain().length();
+            if (appearanceChances == null) {
+                log.debug("UNEXPECTED LAST SYMBOL [{}]. Terminating early", lastSymbol);
+                break;
+            }
 
-            if (lengthDifference >= 0) {
-                for (int i = 0; i <= lengthDifference; i++) {
-                    String checkedPiece = linguisticChain.substring(i, i + prediction.getLinguisticChain().length());
-                    if (prediction.getLinguisticChain().equals(checkedPiece)) {
-//                        log.trace("Prediction matched: result = {}, chain = {}", prediction.getPossibleResult(), prediction.getLinguisticChain());
-                        matchedPredictions.add(prediction);
-                    }
+            double currMax = Double.MIN_VALUE;
+            for (Map.Entry<Character, Double> appearanceChance : appearanceChances.entrySet()) {
+                if (appearanceChance.getValue() > currMax) {
+                    currMax = appearanceChance.getValue();
+                    lastSymbol = appearanceChance.getKey();
                 }
             }
         }
 
-        return matchedPredictions;
-    }
+        Instant lastGlucoseRecordTime = userRecords.get(userRecords.size() - 1).getEventTime();
+        SymbolBounds symbolBounds = linguisticChainService.getSymbolBounds(lastSymbol);
 
-    @Override
-    public void savePrediction(Prediction prediction) {
-        predictionDAO.savePrediction(prediction);
+        return new PossibleFutureGlucoseDTO(lastGlucoseRecordTime, symbolBounds.getMin(), symbolBounds.getMax());
     }
 }

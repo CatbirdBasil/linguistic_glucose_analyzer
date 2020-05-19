@@ -1,5 +1,6 @@
 package com.diploma.linguistic_glucose_analyzer.service.impl;
 
+import com.diploma.linguistic_glucose_analyzer.dto.SymbolBounds;
 import com.diploma.linguistic_glucose_analyzer.model.Alphabet;
 import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataRecord;
 import com.diploma.linguistic_glucose_analyzer.service.LinguisticChainService;
@@ -139,6 +140,29 @@ public abstract class AbstractLinguisticChainService implements LinguisticChainS
         return getUpperSymbolBounds(alphabet).get(symbols[index - 1]) < GLUCOSE_MIN_HEALTHY;
     }
 
+    @Override
+    public SymbolBounds getSymbolBounds(char symbol) {
+        return getSymbolBounds(symbol, USED_ALPHABET);
+    }
+
+    @Override
+    public SymbolBounds getSymbolBounds(char symbol, Alphabet alphabet) {
+        char[] symbols = alphabet.getSymbols();
+
+        Map<Character, Double> upperBounds = getUpperSymbolBounds(alphabet);
+
+        if (symbol == symbols[0]) {
+            return new SymbolBounds(symbol, MIN_GLUCOSE, upperBounds.get(symbol));
+        }
+
+        int index =  Arrays.binarySearch(symbols, symbol);
+
+        if (index == -1) {
+            return null;
+        }
+
+        return new SymbolBounds(symbol, upperBounds.get(symbols[index - 1]), upperBounds.get(symbol));
+    }
 
     //TODO Remove
 

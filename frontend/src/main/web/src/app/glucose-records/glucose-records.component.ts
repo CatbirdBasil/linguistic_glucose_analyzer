@@ -4,6 +4,7 @@ import {GlucoseDataRecord} from "@models/glucose-data-record";
 import {PossibleGlucoseValue} from "@models/possible-glucose-value";
 import {Chart, ChartConfiguration} from 'chart.js'
 import {formatDate} from "@angular/common";
+import {PredictionService} from "../service/prediction-service";
 
 @Component({
   selector: 'app-glucose-records',
@@ -39,7 +40,8 @@ export class GlucoseRecordsComponent implements OnInit {
   @ViewChild('regularRow') regularRowTemplate: TemplateRef<any>;
   @ViewChild('editableRow') editableRowTemplate: TemplateRef<any>;
 
-  constructor(private glucoseService: GlucoseService) {
+  constructor(private glucoseService: GlucoseService,
+              private predictionService: PredictionService) {
   }
 
   ngOnInit() {
@@ -61,15 +63,17 @@ export class GlucoseRecordsComponent implements OnInit {
       }
     )
 
-    this.possibleValue = new class implements PossibleGlucoseValue {
-      approximateTime: Date;
-      max: number;
-      min: number;
-    }
-
-    this.possibleValue.approximateTime = new Date(Date.now());
-    this.possibleValue.min = 212.123521;
-    this.possibleValue.max = 225.1231;
+    this.loadPrediction();
+    //
+    // this.possibleValue = new class implements PossibleGlucoseValue {
+    //   approximateTime: Date;
+    //   max: number;
+    //   min: number;
+    // }
+    //
+    // this.possibleValue.approximateTime = new Date(Date.now());
+    // this.possibleValue.min = 212.123521;
+    // this.possibleValue.max = 225.1231;
   }
 
   onChangePage(onPageRecords: Array<any>) {
@@ -92,6 +96,16 @@ export class GlucoseRecordsComponent implements OnInit {
     } else {
       return this.fineGlucoseInfoTemplate;
     }
+  }
+
+  loadInfoTemplateByValueForPrediction(possibleValue: PossibleGlucoseValue) {
+    let minTemplate = this.loadInfoTemplateByValue(possibleValue.min);
+
+    if (minTemplate == this.hypoStateTemplate || this.hypoRiskTemplate) {
+      return minTemplate;
+    }
+
+    return this.loadInfoTemplateByValue(possibleValue.max);
   }
 
   loadRecordTemplate(record: GlucoseDataRecord) {
@@ -231,9 +245,14 @@ export class GlucoseRecordsComponent implements OnInit {
   loadPrediction() {
     this.loadingPrediction = true;
 
-    setTimeout(() => {    //<<<---    using ()=> syntax
-      this.loadingPrediction = false;
-    }, 1500);
+    this.predictionService.getPossibleFutureGlucoseValue().subscribe(
+      data => {
+        data.approximateTime = new Date(data.approximateTime);
+        this.possibleValue = data;
+        this.loadingPrediction = false;
+      },
+      error => console.log(error)
+    )
   }
 
   @ViewChild('myCanvas') myCanvas: ElementRef;
