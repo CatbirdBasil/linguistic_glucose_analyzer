@@ -1,21 +1,94 @@
 <!--<div class="row mt-3">-->
 <!--  <div class="container">-->
-<div class="row descriptionText">
+<div class="row mt-0">
 
-  <div class="col-md-12 py-3 card roundedCard">
+  <div *ngIf="glucoseRecords != null && glucoseRecords.length > 10" class="col-md-12  card roundedCard pl-1 pr-1 pb-3 pt-1">
     <div class="row">
-      <div class="col-md-12">
-        <div class="row px-5">
-          <b>Description:</b>
-        </div>
+      <div class="col-md-10 pl-0 pr-0">
+        <div class="row">
+          <div class="col-md-5 pt-2 pr-0 possibleGlucoseHeaderText">
+            Info on possible future glucose level:
+            <!--        <div class="row px-5">-->
+            <!--          <b>Description:</b>-->
+            <!--        </div>-->
 
-        <div class="row px-4">
-          HERERE
+            <!--        <div class="row px-4">-->
+            <!--          HERERE-->
+            <!--        </div>-->
+          </div>
+          <div class="col-md-4 pl-2">
+            <ng-template [ngTemplateOutlet]="loadInfoTemplateByValue(possibleValue.min)"></ng-template>
+          </div>
+          <div class="col-md-5">
+          </div>
+        </div>
+        <div class="row pt-2">
+          <div class="col-md-6 possibleGlucoseText pr-0">
+            Approximate time: <b class="colouredText">{{possibleValue.approximateTime | date: 'EEEE dd/MM/yyyy'}}
+            at {{possibleValue.approximateTime | date: 'HH:mm:ss'}}</b>
+          </div>
+          <div class="col-md-6 possibleGlucoseText pl-2">
+            Approximate value: from <b class="colouredText">{{possibleValue.min | number:'1.0-2'}}</b> to <b
+            class="colouredText">{{possibleValue.max | number:'1.0-2'}}</b>
+          </div>
+
         </div>
       </div>
+      <div class="col-md-2 pt-4 pl-0 pr-2">
+        <button (click)="loadPrediction()" class="btn btn-block blueButton float-right addRecordButton" color="indigo" mdbBtn
+                mdbWavesEffect>
+          Refresh
+          <i *ngIf="loadingPrediction" class="fa fa-spinner fa-spin"></i>
+        </button>
+      </div>
+    </div>
+
+    <!--      <div class="col-md-4 pt-2 pr-0">-->
+    <!--        Info on possible future glucose level:-->
+    <!--&lt;!&ndash;        <div class="row px-5">&ndash;&gt;-->
+    <!--&lt;!&ndash;          <b>Description:</b>&ndash;&gt;-->
+    <!--&lt;!&ndash;        </div>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;        <div class="row px-4">&ndash;&gt;-->
+    <!--&lt;!&ndash;          HERERE&ndash;&gt;-->
+    <!--&lt;!&ndash;        </div>&ndash;&gt;-->
+    <!--      </div>-->
+    <!--      <div class="col-md-3 pl-3">-->
+    <!--        <ng-template [ngTemplateOutlet]="loadInfoTemplateByValue(possibleValue.min)"></ng-template>-->
+    <!--      </div>-->
+    <!--      <div class="col-md-5">-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <!--    <div class="row pt-3">-->
+    <!--      <div class="col-md-5 possibleGlucoseText">-->
+    <!--        Approximate time: <b class="colouredText">{{possibleValue.approximateTime | date: 'EEEE dd/MM/yyyy'}} at {{possibleValue.approximateTime | date: 'HH:mm:ss'}}</b>-->
+    <!--      </div>-->
+    <!--      <div class="col-md-5 possibleGlucoseText">-->
+    <!--        Approximate value: from <b class="colouredText">{{possibleValue.min | number:'1.0-2'}}</b> to <b class="colouredText">{{possibleValue.max | number:'1.0-2'}}</b>-->
+    <!--      </div>-->
+    <!--      <div class="col-md-2 possibleGlucoseText">-->
+    <!--        REFRESH-->
+    <!--      </div>-->
+    <!--    </div>-->
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-md-12 card roundedCard pl-1 pr-1 pb-3 pt-1">
+    <div [ngClass]="{'chart-container pt-2 pl-2 pr-2' : glucoseRecords != null && glucoseRecords.length > 4,
+    'displayNone': glucoseRecords == null || glucoseRecords.length <= 4}"
+         class="" >
+<!--    <div class="chart-container" style="position: relative; height:80vh; width:80vw">-->
+      <canvas #myCanvas id="canvas"></canvas>
+<!--      <canvas #myCanvas id="canvas">{{linechart}}</canvas>-->
+    </div>
+
+    <div class="pt-3 centeredText" *ngIf="glucoseRecords == null || glucoseRecords.length <= 4">
+      More records are required to see chart
     </div>
   </div>
 </div>
+
 
 <!--    <div class="row mt-3">-->
 <!--      <div class="col-md-12 pt-3 pb-0 card roundedCard pagDiv">-->
@@ -24,11 +97,13 @@
 <!--    </div>-->
 
 <div class="row mt-3">
-  <div class="col-md-12 pt-2 card  roundedCard">
+  <div class="col-md-12 pt-2 card roundedCard">
 
     <div class="row mt-1">
-      <div class="col-md-12 pt-1 pb-0 pagDiv">
+      <div class="col-md-9 pt-1 pb-0 pagDiv">
         <jw-pagination [items]="glucoseRecords" (changePage)="onChangePage($event)" [pageSize]="20"></jw-pagination>
+      </div>
+      <div class="col-md-3 pt-1 pb-0 pagDiv">
       </div>
     </div>
 
@@ -43,7 +118,8 @@
         Info
       </div>
       <div *ngIf="!editedRecord" class="col-md-3 noPadding table-cell-top addRecordCell">
-        <button (click)="addRecord()" class="btn blueButton float-right addRecordButton" color="indigo" mdbBtn mdbWavesEffect>
+        <button (click)="addRecord()" class="btn blueButton float-right addRecordButton" color="indigo" mdbBtn
+                mdbWavesEffect>
           Add record
           <!--              <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>-->
         </button>
@@ -57,22 +133,17 @@
       </div>
     </div>
 
+    <div *ngIf="glucoseRecords == null || glucoseRecords.length == 0" class="row">
+      <div class="col-md-12 pt-3 pb-2 centeredText">
+        Try to add new glucose record
+      </div>
+    </div>
 
     <div class="row">
-      <!--<b>&#45;&#45;Feedback placeholder&#45;&#45;</b>-->
       <div class="col-md-12 noPadding" *ngFor="let record of onPageRecords; let i=index">
 
         <div class="row" *ngIf="!(i % 2)">
           <div class="col-md-12 noPadding">
-
-            <!--                <div class="row">-->
-            <!--                  <div class="col-md-12 pl-5">-->
-            <!--                    <b class="mr-1" *ngIf="message.user != null">{{message.user.details.firstName}}-->
-            <!--                      {{message.user.details.lastName}}</b>-->
-            <!--                    <b class="mr-1" *ngIf="message.user == null">You </b>-->
-            <!--                    <ngb-rating class="pl-2" [(rate)]="message.rating" [max]="5" [readonly]="true"></ngb-rating>-->
-            <!--                  </div>-->
-            <!--                </div>-->
 
             <div class="row">
               <ng-template [ngTemplateOutlet]="loadRecordTemplate(record)"
@@ -85,15 +156,6 @@
 
         <div class="row greyComment" *ngIf="(i % 2)">
           <div class="col-md-12 noPadding">
-
-            <!--                <div class="row">-->
-            <!--                  <div class="col-md-12 pl-5">-->
-            <!--                    <b class="mr-1" *ngIf="message.user != null">{{message.user.details.firstName}}-->
-            <!--                      {{message.user.details.lastName}}</b>-->
-            <!--                    <b class="mr-1" *ngIf="message.user == null">You </b>-->
-            <!--                    <ngb-rating class="pl-2" [(rate)]="message.rating" [max]="5" [readonly]="true"></ngb-rating>-->
-            <!--                  </div>-->
-            <!--                </div>-->
 
             <div class="row">
               <ng-template [ngTemplateOutlet]="loadRecordTemplate(record)"
@@ -153,7 +215,8 @@
     <ng-template [ngTemplateOutlet]="loadInfoTemplate(record)"></ng-template>
   </div>
   <div class="col-md-3 pt-1 pb-1 pl-3 table-cell table-cell-right">
-    <button (click)="prepareForDeletion(record)" class="btn-sm deleteButton float-right" color="pink" mdbBtn mdbWavesEffect
+    <button (click)="prepareForDeletion(record)" class="btn-sm deleteButton float-right" color="pink" mdbBtn
+            mdbWavesEffect
             data-toggle="modal" data-target="#modalConfirmDelete">
       Delete
       <!--              <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>-->
@@ -166,15 +229,15 @@
 
 <ng-template #editableRow>
   <div class="col-md-4 pl-3 table-cell table-cell-left pt-2 pb-2">
-<!--    <input type="datetime-local" [ngModel]="editedRecord.eventTime | date:'yyyy-MM-ddTHH:mm'"-->
-<!--           (ngModelChange)="dateChanged($event)" class="form-control" />-->
+    <!--    <input type="datetime-local" [ngModel]="editedRecord.eventTime | date:'yyyy-MM-ddTHH:mm'"-->
+    <!--           (ngModelChange)="dateChanged($event)" class="form-control" />-->
 
     <input [(ngModel)]="editedRecord.eventTime"
-           [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1" class="form-control" >
+           [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1" class="form-control">
     <owl-date-time #dtPicker1></owl-date-time>
   </div>
   <div class="col-md-2 pl-3 table-cell pt-2 pb-2 glucoseValue">
-    <input type="number" [(ngModel)]="editedRecord.value" class="form-control" />
+    <input type="number" [(ngModel)]="editedRecord.value" class="form-control"/>
   </div>
   <div class="col-md-3 pl-3 table-cell">
     <ng-template [ngTemplateOutlet]="loadInfoTemplate(editedRecord)"></ng-template>
@@ -216,138 +279,3 @@
   </div>
 </div>
 <!--Modal: modalConfirmDelete-->
-
-<!--<input type="button" value="Добавить" class="btn btn-default" (click)="addUser()" />-->
-<!--<table class="table table-striped">-->
-<!--  <thead>-->
-<!--  <tr>-->
-<!--    <td>Id</td>-->
-<!--    <td>Имя</td>-->
-<!--    <td>Возраст</td>-->
-<!--    <td></td>-->
-<!--    <td></td>-->
-<!--  </tr>-->
-<!--  </thead>-->
-<!--  <tbody>-->
-<!--  <tr *ngFor="let user of users">-->
-<!--    <ng-template [ngTemplateOutlet]="loadTemplate(user)"-->
-<!--                 [ngTemplateOutletContext]="{ $implicit: user}">-->
-<!--    </ng-template>-->
-<!--  </tr>-->
-<!--  </tbody>-->
-<!--</table>-->
-<!--<div>{{statusMessage}}</div>-->
-
-
-<!--&lt;!&ndash;шаблон для чтения&ndash;&gt;-->
-<!--<ng-template #readOnlyTemplate let-user>-->
-<!--  <td>{{user.id}}</td>-->
-<!--  <td>{{user.name}}</td>-->
-<!--  <td>{{user.age}}</td>-->
-<!--  <td>-->
-<!--    <input type="button" value="Изменить" class="btn btn-default" (click)="editUser(user)" />-->
-<!--  </td>-->
-<!--  <td>-->
-<!--    <input type="button" value="Удалить" (click)="deleteUser(user)" class="btn btn-danger" />-->
-<!--  </td>-->
-<!--</ng-template>-->
-
-<!--&lt;!&ndash;шаблон для редактирования&ndash;&gt;-->
-<!--<ng-template #editTemplate>-->
-<!--  <td>-->
-<!--    <input type="number" [(ngModel)]="editedUser.id" readonly disabled class="form-control" />-->
-<!--  </td>-->
-<!--  <td>-->
-<!--    <input type="text" [(ngModel)]="editedUser.name" class="form-control" />-->
-<!--  </td>-->
-<!--  <td>-->
-<!--    <input type="number" [(ngModel)]="editedUser.age" class="form-control" />-->
-<!--  </td>-->
-<!--  <td>-->
-<!--    <input type="button" value="Сохранить" (click)="saveUser()" class="btn btn-success" />-->
-<!--  </td>-->
-<!--  <td>-->
-<!--    <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />-->
-<!--  </td>-->
-<!--</ng-template>-->
-
-
-<!--    <div class="row mt-3" *ngIf="isFeedbackAllowed">-->
-<!--      <div class="col-md-12 pt-3 pb-2 card roundedCard">-->
-
-<!--        <form [formGroup]="feedbackForm" (ngSubmit)="addFeedback(feedbackForm.value)">-->
-<!--          <div class="row px-3">-->
-<!--            <div class="col-md-12">-->
-
-<!--              <ng-template #st let-fill="fill">-->
-<!--              <span class="smallerStar" [class.full]="fill === 100">-->
-<!--                &#9733;-->
-<!--              </span>-->
-<!--              </ng-template>-->
-
-<!--              <label for="rating">Your score: </label>-->
-<!--              <ngb-rating class="pl-2" id="rating" [formControl]="feedbackForm.controls.rating" [starTemplate]="st"-->
-<!--                          max="5"></ngb-rating>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <div class="row px-3">-->
-<!--            <div class="col-md-12">-->
-
-<!--              <label for="message">Your message: </label>-->
-<!--              <textarea-->
-<!--                class="form-control"-->
-<!--                formControlName="feedbackMessage"-->
-<!--                id="message"-->
-<!--                placeholder="Type your feedback here"-->
-<!--                rows="5"-->
-<!--                [ngClass]="{ 'is-invalid': feedbackForm.controls.feedbackMessage.errors }"></textarea>-->
-
-<!--              <div *ngIf="feedbackForm.controls.feedbackMessage.errors" class="invalid-input">-->
-<!--                <div *ngIf="feedbackForm.controls.feedbackMessage.errors.minlength">Feedback must be at least 3-->
-<!--                  characters long-->
-<!--                </div>-->
-<!--                <div *ngIf="feedbackForm.controls.feedbackMessage.errors.maxlength">Feedback must be less than 2048-->
-<!--                  characters long-->
-<!--                </div>-->
-<!--              </div>-->
-
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <div class="row px-3 pt-3" *ngIf="!isFeedbackGiven">-->
-<!--            <div class="offset-md-10"></div>-->
-<!--            <div class="col-md-2 my-auto px-auto">-->
-<!--              <button type="submit" class="btn btn-sm btn-block float-right styledButton" mdbBtn color="indigo"-->
-<!--                      mdbWavesEffect>-->
-<!--                Submit-->
-<!--                <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>-->
-<!--              </button>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <div class="row px-3 pt-3" *ngIf="isFeedbackGiven">-->
-<!--            <div class="offset-md-8"></div>-->
-<!--            <div class="col-md-2 my-auto px-2">-->
-<!--              <button type="button" class="btn btn-sm btn-block float-right styledButton" mdbBtn color="indigo"-->
-<!--                      mdbWavesEffect (click)="removeFeedback(feedbackForm.value)">-->
-<!--                Remove-->
-<!--                <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>-->
-<!--              </button>-->
-<!--            </div>-->
-
-<!--            <div class="col-md-2 my-auto px-2">-->
-<!--              <button type="button" class="btn btn-sm btn-block float-right styledButton" mdbBtn color="indigo"-->
-<!--                      mdbWavesEffect (click)="updateFeedback(feedbackForm.value)">-->
-<!--                Update-->
-<!--                <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>-->
-<!--              </button>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </form>-->
-
-<!--      </div>-->
-<!--    </div>-->
-
-<!--  </div>-->
-<!--</div>-->

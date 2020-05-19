@@ -47,10 +47,6 @@
   font-size: 25px;
 }
 
-.descriptionText {
-  font-size: 20px;
-}
-
 .right {
   float: right;
   background-color: #2E294E !important;
@@ -169,8 +165,6 @@ div {
 .table-column-header {
   border: 1px solid lightgrey;
   //background-color:  lightgrey;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
   border-top-width: 2px;
   text-align: center;
   //color: #f58687;
@@ -179,10 +173,12 @@ div {
 }
 
 .table-column-header-left {
+  border-top-left-radius: 10px;
   border-left-width: 2px;
 }
 
 .table-column-header-right {
+  border-top-right-radius: 10px;
   border-right-width: 2px;
 }
 
@@ -234,4 +230,28 @@ div {
 
 .modal-dialog.modal-notify.modal-danger .fas, .modal-dialog.modal-notify.modal-danger .fab, .modal-dialog.modal-notify.modal-danger .far {
   color: #c45858;
+}
+
+.possibleGlucoseHeaderText {
+  font-size: 21px;
+  padding-top: 12px !important;
+}
+
+.possibleGlucoseText {
+  //color: #f58687;
+  font-size: 18px;
+}
+
+.colouredText {
+  color: #fd9899;
+}
+
+.displayNone {
+  display: none;
+}
+
+.centeredText {
+  text-align: center;
+  font-size: 20px;
+  color: darkgrey;
 }

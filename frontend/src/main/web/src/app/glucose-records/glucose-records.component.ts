@@ -1,6 +1,9 @@
-import {Component, OnInit, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, OnInit, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation} from '@angular/core';
 import {GlucoseService} from "../service/glucose-service";
 import {GlucoseDataRecord} from "@models/glucose-data-record";
+import {PossibleGlucoseValue} from "@models/possible-glucose-value";
+import {Chart, ChartConfiguration} from 'chart.js'
+import {formatDate} from "@angular/common";
 
 @Component({
   selector: 'app-glucose-records',
@@ -18,7 +21,14 @@ export class GlucoseRecordsComponent implements OnInit {
   recordToDelete: GlucoseDataRecord;
   isNewRecord: boolean;
 
-  currPage: any = {};
+  loadingPrediction: boolean;
+
+  possibleValue: PossibleGlucoseValue;
+
+  linechart: Chart;
+  linechartConfig: ChartConfiguration;
+
+  receivedGlucose = {};
 
   @ViewChild('fineGlucoseInfo') fineGlucoseInfoTemplate: TemplateRef<any>;
   @ViewChild('hyperRisk') hyperRiskTemplate: TemplateRef<any>;
@@ -34,6 +44,7 @@ export class GlucoseRecordsComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
+    this.loadingPrediction = false;
 
     this.glucoseService.getGlucoseRecordsForCurrentUser().subscribe(
       data => {
@@ -45,8 +56,20 @@ export class GlucoseRecordsComponent implements OnInit {
         data.sort((a, b) => b.eventTime.getTime() - a.eventTime.getTime())
         this.glucoseRecords = data;
         this.isLoading = false;
+
+        this.initChart();
       }
     )
+
+    this.possibleValue = new class implements PossibleGlucoseValue {
+      approximateTime: Date;
+      max: number;
+      min: number;
+    }
+
+    this.possibleValue.approximateTime = new Date(Date.now());
+    this.possibleValue.min = 212.123521;
+    this.possibleValue.max = 225.1231;
   }
 
   onChangePage(onPageRecords: Array<any>) {
@@ -54,7 +77,10 @@ export class GlucoseRecordsComponent implements OnInit {
   }
 
   loadInfoTemplate(record: GlucoseDataRecord) {
-    let val = record.value;
+    return this.loadInfoTemplateByValue(record.value);
+  }
+
+  loadInfoTemplateByValue(val: number) {
     if (val <= 70) {
       return this.hypoStateTemplate;
     } else if (val <= 80) {
@@ -118,12 +144,16 @@ export class GlucoseRecordsComponent implements OnInit {
 
       this.glucoseService.saveGlucoseRecord(this.editedRecord).subscribe(
         data => {
+          data.eventTime = new Date(data.eventTime);
           let index = this.glucoseRecords.findIndex((x) => x.id == this.editedRecord.id);
           this.glucoseRecords[index] = data;
 
           index = this.onPageRecords.findIndex((x) => x.id == this.editedRecord.id);
           this.onPageRecords[index] = data;
-          this.onPageRecords.pop();
+
+          if (this.onPageRecords.length > 20) {
+            this.onPageRecords.pop();
+          }
 
           console.log("SAVED: ", this.editedRecord);
           this.isNewRecord = false;
@@ -131,6 +161,7 @@ export class GlucoseRecordsComponent implements OnInit {
 
           this.onPageRecords.sort((a, b) => b.eventTime.getTime() - a.eventTime.getTime());
           this.glucoseRecords.sort((a, b) => b.eventTime.getTime() - a.eventTime.getTime());
+          this.updateChartData();
         },
         err => {
           console.log(err);
@@ -152,6 +183,7 @@ export class GlucoseRecordsComponent implements OnInit {
 
           this.onPageRecords.sort((a, b) => b.eventTime.getTime() - a.eventTime.getTime());
           this.glucoseRecords.sort((a, b) => b.eventTime.getTime() - a.eventTime.getTime());
+          this.updateChartData();
         },
         err => {
           console.log(err);
@@ -185,6 +217,7 @@ export class GlucoseRecordsComponent implements OnInit {
 
           index = this.onPageRecords.findIndex((x) => x.id == this.recordToDelete.id);
           this.onPageRecords.splice(index, 1);
+          this.updateChartData();
         },
         error => console.log(error)
       )
@@ -193,5 +226,183 @@ export class GlucoseRecordsComponent implements OnInit {
 
   prepareForDeletion(record: GlucoseDataRecord) {
     this.recordToDelete = record;
+  }
+
+  loadPrediction() {
+    this.loadingPrediction = true;
+
+    setTimeout(() => {    //<<<---    using ()=> syntax
+      this.loadingPrediction = false;
+    }, 1500);
+  }
+
+  @ViewChild('myCanvas') myCanvas: ElementRef;
+  public context: CanvasRenderingContext2D;
+
+  // initChart() {
+  //
+  //   let chartRecords = this.glucoseRecords.slice(0, 2016);
+  //   chartRecords = chartRecords.filter((val, i) => i % 12 == 0);
+  //
+  //   this.context = (<HTMLCanvasElement>this.myCanvas.nativeElement).getContext('2d');
+  //   this.linechart = new Chart(this.context, {
+  //       type: 'line',
+  //       data: {
+  //         labels: chartRecords
+  //           .map(x => x.eventTime)
+  //         // .map(x => formatDate(x, 'EEEE dd/MM/yyyy', 'en-US') + ' at ' + formatDate(x, 'HH:mm:ss', 'en-US')),
+  //         ,
+  //         datasets: [{
+  //           data: chartRecords.map(x => x.value),
+  //           borderColor: '#c45858',
+  //           backgroundColor: '#fd9899',
+  //           fill: false
+  //         }]
+  //       },
+  //       options: {
+  //         title: {
+  //           display: true,
+  //           text: 'Glucose measures for last week',
+  //           fontSize: 20
+  //         },
+  //         legend: {
+  //           display: false
+  //         },
+  //         scales: {
+  //           xAxes: [{
+  //             display: true,
+  //             type: 'time',
+  //             time: {
+  //               unit: 'day',
+  //               displayFormats: {
+  //                 hour: 'HH'
+  //               },
+  //               stepSize: 1
+  //             },
+  //             distribution: 'series'
+  //           }],
+  //           yAxes: [{
+  //             display: true,
+  //             ticks: {
+  //               min: 0,
+  //               max: 520,
+  //
+  //               // forces step size to be 5 units
+  //               stepSize: 10
+  //             }
+  //           }],
+  //         },
+  //         responsive: true,
+  //         tooltips: {
+  //           position: 'nearest'
+  //         },
+  //         hover: {
+  //           mode: 'nearest',
+  //           intersect: true
+  //         },
+  //       }
+  //     }
+  //   )
+  // }
+
+  initChart() {
+    let chartRecords;
+
+    if (this.glucoseRecords.length > 2016) {
+      chartRecords = this.glucoseRecords.slice(0, 2016);
+      chartRecords = chartRecords.filter((val, i) => i % 12 == 0);
+    } else {
+      chartRecords = this.glucoseRecords;
+      let fluidMultiplier = chartRecords.length / 168;
+      fluidMultiplier = Math.round(fluidMultiplier);
+      if (fluidMultiplier > 1) {
+        chartRecords = chartRecords.filter((val, i) => i % fluidMultiplier == 0);
+      }
+    }
+
+    this.context = (<HTMLCanvasElement>this.myCanvas.nativeElement).getContext('2d');
+    this.linechartConfig = {
+      type: 'line',
+      data: {
+        labels: chartRecords
+          .map(x => x.eventTime)
+        // .map(x => formatDate(x, 'EEEE dd/MM/yyyy', 'en-US') + ' at ' + formatDate(x, 'HH:mm:ss', 'en-US')),
+        ,
+        datasets: [{
+          data: chartRecords.map(x => x.value),
+          borderColor: '#c45858',
+          backgroundColor: '#fd9899',
+          fill: false
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Glucose measures for last week',
+          fontSize: 20
+        },
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+            display: true,
+            type: 'time',
+            time: {
+              unit: 'day',
+              displayFormats: {
+                hour: 'HH'
+              },
+              stepSize: 1
+            },
+            distribution: 'series'
+          }],
+          yAxes: [{
+            display: true,
+            ticks: {
+              min: 0,
+              max: 520,
+
+              // forces step size to be 5 units
+              stepSize: 10
+            }
+          }],
+        },
+        responsive: true,
+        tooltips: {
+          position: 'nearest'
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        },
+      }
+    }
+    this.linechart = new Chart(this.context, this.linechartConfig);
+  }
+
+  updateChartData() {
+    let chartRecords;
+
+    if (this.glucoseRecords.length > 2016) {
+      chartRecords = this.glucoseRecords.slice(0, 2016);
+      chartRecords = chartRecords.filter((val, i) => i % 12 == 0);
+    } else {
+      chartRecords = this.glucoseRecords;
+      let fluidMultiplier = chartRecords.length / 168;
+      fluidMultiplier = Math.round(fluidMultiplier);
+      if (fluidMultiplier > 1) {
+        chartRecords = chartRecords.filter((val, i) => i % fluidMultiplier == 0);
+      }
+    }
+
+    this.linechartConfig.data.datasets.forEach(function (dataset) {
+      dataset.data = chartRecords.map(x => x.value);
+    });
+
+    this.linechartConfig.data.labels = chartRecords
+      .map(x => x.eventTime);
+
+    this.linechart.update();
   }
 }
