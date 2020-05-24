@@ -1,7 +1,7 @@
-package com.diploma.linguistic_glucose_analyzer.dao.impl;
+package com.diploma.linguistic_glucose_analyzer.service.impl;
 
 import com.diploma.linguistic_glucose_analyzer.constants.LinguisticChainConstants;
-import com.diploma.linguistic_glucose_analyzer.dao.GlucoseFileDAO;
+import com.diploma.linguistic_glucose_analyzer.service.GlucoseFileService;
 import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataCode;
 import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataRecord;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Repository
-public class UCLGlucoseFileDAO implements GlucoseFileDAO {
+public class UCLGlucoseFileService /*implements GlucoseFileService*/ {
 
     /**
      * Fetch all records from file
@@ -31,7 +31,7 @@ public class UCLGlucoseFileDAO implements GlucoseFileDAO {
      * @param filePath relative path to file
      * @return list of all records from file
      */
-    @Override
+//    @Override
     public List<GlucoseDataRecord> getRecords(String filePath) {
         log.info("Reading from file: {}", filePath);
 

@@ -13,6 +13,7 @@ export const REGISTRATION_URL = API_URL + "auth/signup";
 
 export const GLUCOSE_ENDPOINT_URL = API_URL + "glucose/";
 export const GET_GLUCOSE_RECORDS_FOR_CURR_USER_URL = GLUCOSE_ENDPOINT_URL + "user/";
+export const UPLOAD_GLUCOSE_RECORD_FROM_CSV_URL = GLUCOSE_ENDPOINT_URL + "fileUpload/";
 
 export const PREDICTION_ENDPOINT_URL = API_URL + "prediction/";
 export const GET_PREDICTION_FOR_CURR_USER_URL = PREDICTION_ENDPOINT_URL;

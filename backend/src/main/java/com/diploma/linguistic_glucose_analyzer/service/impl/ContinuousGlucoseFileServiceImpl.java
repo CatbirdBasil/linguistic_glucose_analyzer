@@ -1,7 +1,7 @@
-package com.diploma.linguistic_glucose_analyzer.dao.impl;
+package com.diploma.linguistic_glucose_analyzer.service.impl;
 
 import com.diploma.linguistic_glucose_analyzer.constants.LinguisticChainConstants;
-import com.diploma.linguistic_glucose_analyzer.dao.GlucoseFileDAO;
+import com.diploma.linguistic_glucose_analyzer.service.GlucoseFileService;
 import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataCode;
 import com.diploma.linguistic_glucose_analyzer.model.GlucoseDataRecord;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 @Slf4j
 @Primary
 @Repository
-public class ContinuousGlucoseFileDAOImpl implements GlucoseFileDAO {
+public class ContinuousGlucoseFileServiceImpl implements GlucoseFileService {
 
     /**
      * Fetch all records from file
@@ -44,9 +44,14 @@ public class ContinuousGlucoseFileDAOImpl implements GlucoseFileDAO {
 
         var recordsFile = new File(filePath);
 
-        if (recordsFile.exists()) {
+        return getRecords(recordsFile);
+    }
+
+    @Override
+    public List<GlucoseDataRecord> getRecords(File file) {
+        if (file.exists()) {
             var records = new ArrayList<GlucoseDataRecord>();
-            try (Stream<String> linesStream = Files.lines(recordsFile.toPath())) {
+            try (Stream<String> linesStream = Files.lines(file.toPath())) {
                 linesStream.forEach(line -> {
                     String[] recordData = line.split(",", -1);
                     GlucoseDataRecord record = getRecord(recordData);
@@ -66,6 +71,22 @@ public class ContinuousGlucoseFileDAOImpl implements GlucoseFileDAO {
         return null;
     }
 
+    @Override
+    public List<GlucoseDataRecord> getRecords(String[] rows) {
+        var records = new ArrayList<GlucoseDataRecord>();
+
+        for (String line : rows) {
+            String[] recordData = line.split(",", -1);
+            GlucoseDataRecord record = getRecord(recordData);
+            if (record != null) {
+                records.add(record);
+            }
+        }
+
+        log.trace("Fetched records: {}", records);
+        return records;
+    }
+
     private GlucoseDataRecord getRecord(String[] recordData) {
         if (recordData == null || recordData.length < 3) {
             log.debug("Invalid data received: {}", Arrays.toString(recordData));
@@ -80,7 +101,7 @@ public class ContinuousGlucoseFileDAOImpl implements GlucoseFileDAO {
                     .atZone(ZoneId.of(LinguisticChainConstants.DEFAULT_ZONE))
                     .toInstant();
         } catch (DateTimeParseException ex) {
-            log.debug("Error while parsing date: ", timeToParse);
+            log.debug("Error while parsing date: {}", timeToParse);
             log.debug("Stacktrace: ", ex);
             return null;
         }

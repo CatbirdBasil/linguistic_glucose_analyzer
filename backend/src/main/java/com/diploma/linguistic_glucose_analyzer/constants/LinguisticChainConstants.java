@@ -17,7 +17,8 @@ public interface LinguisticChainConstants {
 //    Alphabet USED_ALPHABET = Alphabet.ASCII100;
     Alphabet USED_ALPHABET = Alphabet.ENGLISH;
 
-    String DEFAULT_ZONE = "America/Toronto";
+    String DEFAULT_ZONE = "+3";
+//    String DEFAULT_ZONE = "America/Toronto";
 
     String DEFAULT_AUTHORITY = "USER";
 

@@ -2,7 +2,8 @@
 <!--  <div class="container">-->
 <div class="row mt-0">
 
-  <div *ngIf="glucoseRecords != null && glucoseRecords.length > 10" class="col-md-12  card roundedCard pl-1 pr-1 pb-3 pt-1">
+  <div *ngIf="possibleValue != null && glucoseRecords != null && glucoseRecords.length > 10"
+       class="col-md-12  card roundedCard pl-1 pr-1 pb-3 pt-1">
     <div class="row">
       <div class="col-md-10 pl-0 pr-0">
         <div class="row">
@@ -35,7 +36,8 @@
         </div>
       </div>
       <div class="col-md-2 pt-4 pl-0 pr-2">
-        <button (click)="loadPrediction()" class="btn btn-block blueButton float-right addRecordButton" color="indigo" mdbBtn
+        <button (click)="loadPrediction()" class="btn btn-block blueButton float-right addRecordButton" color="indigo"
+                mdbBtn
                 mdbWavesEffect>
           Refresh
           <i *ngIf="loadingPrediction" class="fa fa-spinner fa-spin"></i>
@@ -77,10 +79,10 @@
   <div class="col-md-12 card roundedCard pl-1 pr-1 pb-3 pt-1">
     <div [ngClass]="{'chart-container pt-2 pl-2 pr-2' : glucoseRecords != null && glucoseRecords.length > 4,
     'displayNone': glucoseRecords == null || glucoseRecords.length <= 4}"
-         class="" >
-<!--    <div class="chart-container" style="position: relative; height:80vh; width:80vw">-->
+         class="">
+      <!--    <div class="chart-container" style="position: relative; height:80vh; width:80vw">-->
       <canvas #myCanvas id="canvas"></canvas>
-<!--      <canvas #myCanvas id="canvas">{{linechart}}</canvas>-->
+      <!--      <canvas #myCanvas id="canvas">{{linechart}}</canvas>-->
     </div>
 
     <div class="pt-3 centeredText" *ngIf="glucoseRecords == null || glucoseRecords.length <= 4">
@@ -104,8 +106,16 @@
         <jw-pagination [items]="glucoseRecords" (changePage)="onChangePage($event)" [pageSize]="20"></jw-pagination>
       </div>
       <div class="col-md-3 pt-1 pb-0 pagDiv">
+        <div class="hidden-file">
+              <input type="file" #fileInput ng2FileSelect accept=".csv" [uploader]="uploader" (change)="onChangeFile($event)"/>
+<!--                     (onFileSelected)="onFileSelected($event)"/>-->
+            </div>
+        <button (click)="fileInput.click()" type="button" class="btn btn-sm addRecordButton blueButton float-right" color="indigo" mdbBtn>
+          Upload from csv <i *ngIf="loadingFile" class="fa fa-spinner fa-spin"></i>
+        </button>
       </div>
     </div>
+
 
     <div class="row">
       <div class="col-md-4 noPadding table-column-header table-column-header-left">

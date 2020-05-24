@@ -31,6 +31,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { GlucoseRecordsComponent } from './glucose-records/glucose-records.component';
 import {JwPaginationComponent} from "jw-angular-pagination";
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     NgbModule,
     NgSelectModule,
     OwlDateTimeModule,
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    FileUploadModule
   ],
   providers: [
     Title,

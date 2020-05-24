@@ -1,10 +1,22 @@
-import {Component, ElementRef, OnInit, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import {GlucoseService} from "../service/glucose-service";
 import {GlucoseDataRecord} from "@models/glucose-data-record";
 import {PossibleGlucoseValue} from "@models/possible-glucose-value";
 import {Chart, ChartConfiguration} from 'chart.js'
 import {formatDate} from "@angular/common";
 import {PredictionService} from "../service/prediction-service";
+import {FileUploader} from "ng2-file-upload";
+import {UPLOAD_GLUCOSE_RECORD_FROM_CSV_URL} from "@environments/environment";
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-glucose-records',
@@ -17,6 +29,7 @@ export class GlucoseRecordsComponent implements OnInit {
   public glucoseRecords = [];
   public onPageRecords = [];
   public isLoading = true;
+  public loadingFile = false;
 
   editedRecord: GlucoseDataRecord;
   recordToDelete: GlucoseDataRecord;
@@ -39,6 +52,8 @@ export class GlucoseRecordsComponent implements OnInit {
 
   @ViewChild('regularRow') regularRowTemplate: TemplateRef<any>;
   @ViewChild('editableRow') editableRowTemplate: TemplateRef<any>;
+
+  @ViewChild('fileInput') fileInput: ElementRef<any>;
 
   constructor(private glucoseService: GlucoseService,
               private predictionService: PredictionService) {
@@ -74,6 +89,7 @@ export class GlucoseRecordsComponent implements OnInit {
     // this.possibleValue.approximateTime = new Date(Date.now());
     // this.possibleValue.min = 212.123521;
     // this.possibleValue.max = 225.1231;
+    this.initUploader();
   }
 
   onChangePage(onPageRecords: Array<any>) {
@@ -423,5 +439,59 @@ export class GlucoseRecordsComponent implements OnInit {
       .map(x => x.eventTime);
 
     this.linechart.update();
+  }
+
+  public uploader: FileUploader = new FileUploader({
+    url: UPLOAD_GLUCOSE_RECORD_FROM_CSV_URL,
+    disableMultipart: false,
+    autoUpload: true,
+    method: 'post',
+    itemAlias: 'attachment',
+    allowedFileType: ['csv']
+  });
+
+  public initUploader() {
+    this.uploader.response.subscribe(res => {
+        console.log(res);
+        this.loadingFile = false;
+      }
+    );
+  }
+
+  // public onFileSelected(files: File[]) {
+  public onChangeFile(event) {
+    const file: File = event.srcElement.files[0];
+    this.loadingFile = true;
+
+    try {
+      this.glucoseService.uploadFileWithRecords(file).subscribe(
+        event => {
+          if (event instanceof HttpResponse) {
+
+            this.glucoseService.getGlucoseRecordsForCurrentUser().subscribe(
+              data => {
+                console.log(data);
+                console.log("^Records");
+                data.forEach((d) => {
+                  d.eventTime = new Date(d.eventTime);
+                });
+                data.sort((a, b) => b.eventTime.getTime() - a.eventTime.getTime())
+                this.glucoseRecords = data;
+                this.isLoading = false;
+
+                this.initChart();
+              }
+            )
+
+            this.fileInput.nativeElement.value = null;
+            this.loadingFile = false;
+          }
+        }
+      )
+    } catch (e) {
+      console.log(e);
+      this.loadingFile = false;
+      this.fileInput.nativeElement.value = null;
+    }
   }
 }

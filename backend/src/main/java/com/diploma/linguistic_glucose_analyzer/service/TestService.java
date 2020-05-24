@@ -1,11 +1,6 @@
 package com.diploma.linguistic_glucose_analyzer.service;
 
-import com.diploma.linguistic_glucose_analyzer.dao.GlucoseFileDAO;
 import com.diploma.linguistic_glucose_analyzer.model.*;
-import com.diploma.linguistic_glucose_analyzer.service.BadGlucoseFinderService;
-import com.diploma.linguistic_glucose_analyzer.service.GlucoseService;
-import com.diploma.linguistic_glucose_analyzer.service.LinguisticChainService;
-import com.diploma.linguistic_glucose_analyzer.service.PredictionService;
 import com.diploma.linguistic_glucose_analyzer.service.filter.RecordFilter;
 import com.diploma.linguistic_glucose_analyzer.service.filter.provider.FiltersProvider;
 import com.diploma.linguistic_glucose_analyzer.service.matrix.PredictionMatrixFactory;
@@ -29,7 +24,7 @@ public class TestService {
     private LinguisticChainService linguisticChainService;
     private BadGlucoseFinderService badGlucoseFinderService;
 
-    private GlucoseFileDAO glucoseFileDAO;
+    private GlucoseFileService glucoseFileService;
 
     private FiltersProvider filterProvider;
     private PredictionMatrixFactory predictionMatrixFactory;
@@ -40,12 +35,12 @@ public class TestService {
     private static final String fileBaseName = "Glucose/glucose";
 
     @Autowired
-    public TestService(GlucoseService glucoseService, PredictionService predictionService, LinguisticChainService linguisticChainService, BadGlucoseFinderService badGlucoseFinderService, GlucoseFileDAO glucoseFileDAO, FiltersProvider filterProvider, PredictionMatrixFactory predictionMatrixFactory, PersonService personService) {
+    public TestService(GlucoseService glucoseService, PredictionService predictionService, LinguisticChainService linguisticChainService, BadGlucoseFinderService badGlucoseFinderService, GlucoseFileService glucoseFileService, FiltersProvider filterProvider, PredictionMatrixFactory predictionMatrixFactory, PersonService personService) {
         this.glucoseService = glucoseService;
         this.predictionService = predictionService;
         this.linguisticChainService = linguisticChainService;
         this.badGlucoseFinderService = badGlucoseFinderService;
-        this.glucoseFileDAO = glucoseFileDAO;
+        this.glucoseFileService = glucoseFileService;
         this.filterProvider = filterProvider;
         this.predictionMatrixFactory = predictionMatrixFactory;
         this.personService = personService;
@@ -61,7 +56,7 @@ public class TestService {
             Person person = new Person(DiabetesType.TYPE_TWO);
             person.setId(i);
 //        for (int i = 32; i <= 34; i++) {
-            List<GlucoseDataRecord> records = glucoseFileDAO.getRecords(fileBaseName + getFileNumber(i));
+            List<GlucoseDataRecord> records = glucoseFileService.getRecords(fileBaseName + getFileNumber(i));
 
             for (RecordFilter filter : filterProvider.getFilters()) {
                 records = filter.filter(records);
@@ -245,7 +240,7 @@ public class TestService {
 //        for (int i = 32; i <= 34; i++) {
             Person person = new Person(DiabetesType.TYPE_TWO);
             person.setId(i);
-            List<GlucoseDataRecord> records = glucoseFileDAO.getRecords(fileBaseName + getFileNumber(i));
+            List<GlucoseDataRecord> records = glucoseFileService.getRecords(fileBaseName + getFileNumber(i));
 
             for (RecordFilter filter : filterProvider.getFilters()) {
                 records = filter.filter(records);
@@ -350,7 +345,7 @@ public class TestService {
         int lessThanPersons = 0;
         for (int i = 1; i <= 1; i++) {
 //        for (int i = 32; i <= 34; i++) {
-            List<GlucoseDataRecord> records = glucoseFileDAO.getRecords(fileBaseName + getFileNumber(i));
+            List<GlucoseDataRecord> records = glucoseFileService.getRecords(fileBaseName + getFileNumber(i));
 
             for (RecordFilter filter : filterProvider.getFilters()) {
                 records = filter.filter(records);
@@ -385,7 +380,7 @@ public class TestService {
         int lessThanPersons = 0;
         for (int i = 1; i <= 1; i++) {
 //        for (int i = 32; i <= 34; i++) {
-            List<GlucoseDataRecord> records = glucoseFileDAO.getRecords(fileBaseName + getFileNumber(i));
+            List<GlucoseDataRecord> records = glucoseFileService.getRecords(fileBaseName + getFileNumber(i));
 
             for (RecordFilter filter : filterProvider.getFilters()) {
                 records = filter.filter(records);
