@@ -1,16 +1,235 @@
-<div class="container">
+<div class="row pading_small ">
 
-  <mat-tab-group [(selectedIndex)]="indexOfTabToOpen">
-<!--    <mat-tab label="Your tests">-->
-<!--      <div class="tabBorderPadding">-->
-<!--        <app-user-tests></app-user-tests>-->
-<!--      </div>-->
-<!--    </mat-tab>-->
-<!--    <mat-tab label="Test history">-->
-<!--      <div class="tabBorderPadding">-->
-<!--        <app-user-test-history></app-user-test-history>-->
-<!--      </div>-->
-<!--    </mat-tab>-->
-  </mat-tab-group>
+  <div class="col-md-2">
+  </div>
+  <div class="col-md-8">
+    <div class="card roundedUserCard loginForm">
+      <!-- Name -->
+      <div *ngIf="!isEditing" class="card-block card-content ml-0 mr-0 mt-0 mb-2 px-0 pt-0">
+        <div class="row mx-0">
+          <div class="col-md-12 py-2  card-title profileHeader">
+            User Information
+          </div>
+        </div>
+        <div class="row px-4 profileLine mb-2">
+          <div class="col-md-12">
+            Username: <b class="colouredText">{{currentUser?.username}}</b>
+          </div>
+        </div>
+        <div class="row px-4 profileLine mb-2">
+          <div class="col-md-12">
+            Email: <b class="colouredText">{{currentUser?.email}}</b>
+          </div>
+        </div>
+        <div class="row px-4 profileLine mb-2">
+          <div class="col-md-12">
+            First name: <b class="colouredText">{{currentUser?.name}}</b>
+          </div>
+        </div>
+        <div class="row px-4 profileLine mb-2">
+          <div class="col-md-12">
+            Second name: <b class="colouredText">{{currentUser?.surname}}</b>
+          </div>
+        </div>
+        <div class="row px-4 profileLine mb-2">
+          <div class="col-md-12">
+            Diabetes Type:  <b class="colouredText">{{currentUser?.diabetesTypeId == 1 ? 'First type' : currentUser?.diabetesTypeId == 2 ? 'Second type' : 'No diabetes'}}</b>
+          </div>
+        </div>
+        <div class="row px-4 profileLine mb-2">
+          <div class="col-md-12">
+            Birth Date: <b class="colouredText">{{currentUser?.birthDate | date: 'EEEE dd/MM/yyyy'}}</b>
+          </div>
+        </div>
 
+        <div class="row mt-2 pb-0 mb-0">
+          <div class="col-md-12 px-4">
+            <button (click)="clicked()" class="btn btn-wide blueButton" color="#04819E" mdbBtn mdbWavesEffect>
+              Edit Information
+              <!--            <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>-->
+            </button>
+          </div>
+
+        </div>
+
+        <!--        <table>-->
+
+        <!--          <thead>-->
+        <!--          <tr class="second">-->
+        <!--            <th colspan="2"><h3 class="card-title" align="left">User Information</h3></th>-->
+        <!--          </tr>-->
+        <!--          </thead>-->
+        <!--          <td>-->
+        <!--            <tr>-->
+        <!--              <td>-->
+        <!--                <b>Username: </b>-->
+        <!--              </td>-->
+        <!--              <td>-->
+        <!--                {{currentUser?.username}}-->
+        <!--              </td>-->
+        <!--            </tr>-->
+        <!--            <tr class="second">-->
+        <!--              <td>-->
+        <!--                <b>Email: </b>-->
+        <!--              </td>-->
+        <!--              <td>-->
+        <!--                {{currentUser?.email}}-->
+        <!--              </td>-->
+        <!--            </tr>-->
+
+        <!--          </td>-->
+
+        <!--          <td>-->
+        <!--            <tr>-->
+        <!--              <td>-->
+        <!--                <b>Weight: </b>-->
+        <!--              </td>-->
+        <!--              <td>-->
+        <!--                {{currentUser?.weight}}-->
+        <!--              </td>-->
+        <!--            </tr>-->
+
+        <!--            <tr>-->
+        <!--              <td>-->
+        <!--                <b>Height: </b>-->
+        <!--              </td>-->
+        <!--              <td>-->
+        <!--                {{currentUser?.height}}-->
+        <!--              </td>-->
+        <!--            </tr>-->
+
+
+        <!--            <tr>-->
+        <!--              <td>-->
+        <!--                <b>Age: </b>-->
+        <!--              </td>-->
+        <!--              <td>-->
+        <!--                {{currentUser?.age}}-->
+        <!--              </td>-->
+        <!--            </tr>-->
+
+
+        <!--            <tr>-->
+        <!--              <td>-->
+        <!--                <b>Sex: </b>-->
+        <!--              </td>-->
+        <!--              <td>-->
+        <!--                {{currentUser?.sex}}-->
+        <!--              </td>-->
+        <!--            </tr>-->
+
+        <!--          </td>-->
+
+
+        <!--        </table>-->
+
+
+        <!--        <div class="row">-->
+        <!--          <div class="col-md-6">-->
+        <!--            <button class="btn btn-wide styledButton" color="#04819E" mdbBtn mdbWavesEffect>-->
+        <!--              Edit Information-->
+        <!--              &lt;!&ndash;            <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>&ndash;&gt;-->
+        <!--            </button>-->
+        <!--          </div>-->
+
+        <!--          <div class="col-md-6">-->
+        <!--            <button class="btn btn-wide styledButton" color="#04819E" mdbBtn mdbWavesEffect>-->
+        <!--              Analyse EKG-->
+        <!--              &lt;!&ndash;            <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>&ndash;&gt;-->
+        <!--            </button>-->
+        <!--          </div>-->
+        <!--        </div>-->
+
+
+      </div>
+
+      <div *ngIf="isEditing" class="card-block card-content ml-0 mr-0 mt-0 mb-2 px-0 pt-0">
+
+        <div class="row mx-0">
+          <div class="col-md-12 py-2  card-title profileHeader">
+            User Information
+          </div>
+        </div>
+        <div class="row profileLine px-4 mb-2">
+          <div class="col-md-3">
+            Username:
+          </div>
+          <div class="col-md-9">
+            <input class="form-control" type="text" [(ngModel)]="editableUser.username"/>
+          </div>
+        </div>
+        <div class="row profileLine px-4 mb-2">
+          <div class="col-md-3">
+            Email:
+          </div>
+          <div class="col-md-9">
+            <input class="form-control" type="text" [(ngModel)]="editableUser.email"/>
+          </div>
+        </div>
+        <div class="row profileLine px-4 mb-2">
+          <div class="col-md-3">
+            First name:
+          </div>
+          <div class="col-md-9">
+            <input class="form-control" type="text" [(ngModel)]="editableUser.name"/>
+          </div>
+        </div>
+        <div class="row profileLine px-4 mb-2">
+          <div class="col-md-3">
+            Second name:
+          </div>
+          <div class="col-md-9">
+            <input class="form-control" type="text" [(ngModel)]="editableUser.surname"/>
+          </div>
+        </div>
+        <div class="row profileLine px-4 mb-2">
+          <div class="col-md-3">
+            Diabetes Type:
+          </div>
+          <div class="col-md-9">
+            <select class="form-control" [(ngModel)]="selectedValue.id">
+              <option *ngFor="let c of diabetesType" [ngValue]="c.id">{{c.name}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row profileLine px-4 mb-2">
+          <div class="col-md-3">
+            Birth Date:
+          </div>
+          <div class="col-md-9">
+            <input [(ngModel)]="editableUser.birthDate"
+                   [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1" class="form-control">
+            <owl-date-time [pickerType]="'calendar'" #dtPicker1></owl-date-time>
+<!--            <input class="form-control" type="number" [(ngModel)]="editableUser.birthDate"/>-->
+          </div>
+        </div>
+        <!--        <div class="col-md-4 pl-0">-->
+        <!--          <input class="form-control" type="text" [(ngModel)]="editableUser.weight"/>-->
+        <!--        </div>-->
+
+
+        <div class="row mt-3 px-4">
+          <div class="col-md-6">
+            <button (click)="save()" class="btn btn-wide blueButton" color="#04819E" mdbBtn mdbWavesEffect>
+              Save
+              <i *ngIf="isSaving" class="fa fa-spinner fa-spin"></i>
+            </button>
+          </div>
+          <div class="col-md-6">
+            <button (click)="clicked()" class="btn btn-wide deleteButton" color="#F66F89" mdbBtn mdbWavesEffect>
+              Cancel
+              <!--            <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>-->
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+
+  </div>
+  <div class="col-md-2">
+  </div>
 </div>

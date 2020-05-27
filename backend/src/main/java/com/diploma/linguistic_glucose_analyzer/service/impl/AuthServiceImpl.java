@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         Person person =
-                new Person(DiabetesType.TYPE_TWO, request.getFirstName(), request.getLastName(), Timestamp.valueOf("1999-07-06 00:00:00"));
+                new Person(request.getDiabetesTypeId(), request.getFirstName(), request.getLastName(), request.getBirthDate());
 
         personDAO.save(person);
 

@@ -37,3 +37,89 @@ mat-tab {
 .generateButton {
   bottom: 0;
 }
+
+.pading_small{
+  padding-top: 60px;
+  margin: 50px;
+}
+
+.userpic{
+  width: 196px;
+  height: 196px;
+  border:2px solid #ff8a00;
+  border-radius: 2px;
+}
+.btn1{
+  margin-top: 10px;
+}
+.btn2{
+  margin-top: 20px;
+}
+.actblock{
+  margin-top: 20px;
+}
+td{
+  margin-top: 25px;
+  font-size: 24px;
+  color: #494949;
+  padding-left: 5px;
+}
+th{
+  font-size: 30px;
+  padding-left: 5px;
+  color: #494949;
+}
+//tr {
+//  border: 1px solid #95a5a6;
+//}
+table thead, th{
+  background: #ecf0f1;
+}
+
+table{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-collapse: collapse;
+  border-style: hidden;
+}
+
+.roundedUserCard {
+  border-radius: 10px;
+}
+
+.profileHeader{
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  background-color: #fb9799;
+  font-size: 26px;
+  text-align: center;
+  color: white;
+}
+
+.profileLine {
+  font-size: 22px
+}
+
+.colouredText {
+  color: #fd9899;
+}
+
+.blueButton {
+  //background-color: #B5EF8A !important;
+  background-color: #5B9898	 !important;
+  //background-color: #5B9898 !important;
+  //background-color: #5C5D8D !important;
+  // background-color: #62C370 !important;
+  // background-color: #2E294E !important;
+  vertical-align: bottom;
+}
+
+.deleteButton {
+  //background-color: #B5EF8A !important;
+  background-color: #c45858 !important;
+  //background-color: #5C5D8D !important;
+  // background-color: #62C370 !important;
+  // background-color: #2E294E !important;
+  vertical-align: bottom;
+}

@@ -15,6 +15,12 @@ export class RegistrationComponent implements OnInit {
   error = '';
   loading = false;
 
+  diabetesType = [
+    {id: 1, name: "First type"},
+    {id: 2, name: "Second type"},
+    {id: 3, name: "No diabetes"}
+  ];
+
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               private authService: AuthService) {
@@ -26,11 +32,13 @@ export class RegistrationComponent implements OnInit {
     }
     this.registrationForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(64)]],
-      firstName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(40)]],
-      lastName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(40)]],
+      firstName: ['', [Validators.minLength(4), Validators.maxLength(40)]],
+      lastName: ['', [Validators.minLength(4), Validators.maxLength(40)]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(128)]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(128)]],
-      passwordConfirm: ['', [Validators.required]]
+      passwordConfirm: ['', [Validators.required]],
+      birthDate: ['', []],
+      diabetesTypeId: [1, [Validators.required]]
     }, {
       validator: MustMatch('password', 'passwordConfirm')
     });
@@ -56,6 +64,8 @@ export class RegistrationComponent implements OnInit {
       "username": this.registrationForm.controls.username.value,
       "email": this.registrationForm.controls.email.value,
       "password": this.registrationForm.controls.password.value,
+      "diabetesTypeId": this.registrationForm.controls.diabetesTypeId.value,
+      "birthDate": this.registrationForm.controls.birthDate.value,
       "role": "ROLE_USER"
     };
 

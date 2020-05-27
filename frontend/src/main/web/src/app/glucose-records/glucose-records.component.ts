@@ -471,7 +471,6 @@ export class GlucoseRecordsComponent implements OnInit {
             this.glucoseService.getGlucoseRecordsForCurrentUser().subscribe(
               data => {
                 console.log(data);
-                console.log("^Records");
                 data.forEach((d) => {
                   d.eventTime = new Date(d.eventTime);
                 });

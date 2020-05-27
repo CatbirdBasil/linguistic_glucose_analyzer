@@ -1,5 +1,6 @@
 package com.diploma.linguistic_glucose_analyzer;
 
+import com.diploma.linguistic_glucose_analyzer.constants.LinguisticChainConstants;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -14,14 +15,21 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.util.Properties;
+import java.util.TimeZone;
 
 @SpringBootApplication(exclude = { //
         DataSourceAutoConfiguration.class, //
         DataSourceTransactionManagerAutoConfiguration.class, //
         HibernateJpaAutoConfiguration.class })
 public class LinguisticGlucoseAnalyzerApplication {
+
+    @PostConstruct
+    void init() {
+        TimeZone.setDefault(TimeZone.getTimeZone(LinguisticChainConstants.DEFAULT_ZONE));
+    }
 
     @Autowired
     private Environment env;

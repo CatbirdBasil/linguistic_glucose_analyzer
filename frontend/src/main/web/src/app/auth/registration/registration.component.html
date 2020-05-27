@@ -67,6 +67,26 @@
             </div>
           </div>
 
+          <!-- Diabetes type -->
+          <div class="form-group">
+            <label>Diabetes type</label>
+            <select class="form-control" formControlName="diabetesTypeId">
+              <option *ngFor="let c of diabetesType" [ngValue]="c.id">{{c.name}}</option>
+            </select>
+          </div>
+
+          <!-- Birth Date -->
+          <div class="form-group">
+            <label>Birth Date</label>
+            <input formControlName="birthDate"
+                   [ngClass]="{ 'is-invalid': submitted && f.birthDate.errors }"
+                   id="birthDate"
+                   name="birthDate"
+                   placeholder="Enter your date of birth"
+                   [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1" class="form-control">
+            <owl-date-time [pickerType]="'calendar'" #dtPicker1></owl-date-time>
+          </div>
+
           <!-- Email -->
           <div class="form-group">
             <label>Email</label>
@@ -138,7 +158,7 @@
           </div>
         </form>
       </div>
-      <img alt="javaImg" class="img-brand" src="../../../assets/images/java.png">
+
     </div>
     <div class="offset-3"></div>
   </div>

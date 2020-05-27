@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @Data
 @Entity
@@ -27,13 +28,13 @@ public class Person {
     private String surname;
 
     @Column(name = "birth_date")
-    private Timestamp birthDate;
+    private Instant birthDate;
 
     public Person(long diabetesTypeId) {
         this.diabetesTypeId = diabetesTypeId;
     }
 
-    public Person(long diabetesTypeId, String name, String surname, Timestamp birthDate) {
+    public Person(long diabetesTypeId, String name, String surname, Instant birthDate) {
         this.diabetesTypeId = diabetesTypeId;
         this.name = name;
         this.surname = surname;
@@ -44,7 +45,7 @@ public class Person {
         this(diabetesType.getId());
     }
 
-    public Person(DiabetesType diabetesType, String name, String surname, Timestamp birthDate) {
+    public Person(DiabetesType diabetesType, String name, String surname, Instant birthDate) {
         this(diabetesType.getId(), name, surname, birthDate);
     }
 
