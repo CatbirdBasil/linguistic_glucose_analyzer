@@ -5,9 +5,9 @@
   <div *ngIf="possibleValue != null && glucoseRecords != null && glucoseRecords.length > 10"
        class="col-md-12  card roundedCard pl-1 pr-1 pb-3 pt-1">
     <div class="row">
-      <div class="col-md-10 pl-0 pr-0">
+      <div class="col-md-7 pl-0 pr-0">
         <div class="row">
-          <div class="col-md-5 pt-2 pr-0 possibleGlucoseHeaderText">
+          <div class="col-md-8 pt-2 pr-0 possibleGlucoseHeaderText">
             Info on possible future glucose level:
             <!--        <div class="row px-5">-->
             <!--          <b>Description:</b>-->
@@ -17,31 +17,36 @@
             <!--          HERERE-->
             <!--        </div>-->
           </div>
-          <div class="col-md-4 pl-2">
+          <div class="col-md-4 pl-0">
             <ng-template [ngTemplateOutlet]="loadInfoTemplateByValueForPrediction(possibleValue)"></ng-template>
           </div>
           <div class="col-md-5">
           </div>
         </div>
         <div class="row pt-2">
-          <div class="col-md-6 possibleGlucoseText pr-0">
+          <div class="col-md-12 possibleGlucoseText pl-3">
             Approximate time: <b class="colouredText">{{possibleValue.approximateTime | date: 'EEEE dd/MM/yyyy'}}
             at {{possibleValue.approximateTime | date: 'HH:mm:ss'}}</b>
           </div>
-          <div class="col-md-6 possibleGlucoseText pl-2">
+        </div>
+        <div class="row pt-1">
+          <div class="col-md-12 possibleGlucoseText pl-3">
             Approximate value: from <b class="colouredText">{{possibleValue.min | number:'1.0-2'}}</b> to <b
             class="colouredText">{{possibleValue.max | number:'1.0-2'}}</b>
           </div>
-
         </div>
       </div>
-      <div class="col-md-2 pt-4 pl-0 pr-2">
-        <button (click)="loadPrediction()" class="btn btn-block blueButton float-right addRecordButton" color="indigo"
-                mdbBtn
-                mdbWavesEffect>
-          Refresh
-          <i *ngIf="loadingPrediction" class="fa fa-spinner fa-spin"></i>
-        </button>
+      <div style="padding-top: 13px" class="col-md-5 pl-0 pr-2">
+<!--        <button (click)="loadPrediction()" class="btn btn-block blueButton float-right addRecordButton" color="indigo"-->
+<!--                mdbBtn-->
+<!--                mdbWavesEffect>-->
+<!--          Refresh-->
+<!--          <i *ngIf="loadingPrediction" class="fa fa-spinner fa-spin"></i>-->
+<!--        </button>-->
+        <div class="row recommendation px-3 py-2">
+          <b style="font-size: 18px">Recommendation:</b>
+          {{loadRecommendationTextByValueForPrediction(possibleValue)}}
+        </div>
       </div>
     </div>
 
@@ -80,6 +85,7 @@
     <div [ngClass]="{'chart-container pt-2 pl-2 pr-2' : glucoseRecords != null && glucoseRecords.length > 4,
     'displayNone': glucoseRecords == null || glucoseRecords.length <= 4}"
          class="">
+      <p class="chartTitle">Glucose measures for last week<p>
       <!--    <div class="chart-container" style="position: relative; height:80vh; width:80vw">-->
       <canvas #myCanvas id="canvas"></canvas>
       <!--      <canvas #myCanvas id="canvas">{{linechart}}</canvas>-->

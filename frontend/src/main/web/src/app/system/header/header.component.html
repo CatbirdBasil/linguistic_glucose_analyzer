@@ -45,7 +45,7 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
   <a class="navbar-brand" routerLink="/">
     <img alt="brandImg" class="img-brand" src="../../../assets/images/heart.png">
-    <span style="color: #E7E6F7;"> D-Health</span>
+    <span style="color: #ffffff;"> D-Health</span>
   </a>
   <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbar"
           aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,7 +58,7 @@
       <ul class="navbar-nav mr-1">
         <li class="nav-item">
           <div *ngIf="username ? {} : logout()">
-            <a class="nav-link" routerLink="/account">Welcome, {{username}}</a>
+            <a class="nav-link" routerLink="/account">Hello, {{username}}</a>
           </div>
         </li>
         <li class="nav-item">

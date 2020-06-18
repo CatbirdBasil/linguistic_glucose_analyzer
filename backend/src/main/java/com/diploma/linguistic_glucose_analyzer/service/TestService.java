@@ -20,9 +20,7 @@ import static com.diploma.linguistic_glucose_analyzer.constants.LinguisticChainC
 @Service
 public class TestService {
     private GlucoseService glucoseService;
-    private PredictionService predictionService;
     private LinguisticChainService linguisticChainService;
-    private BadGlucoseFinderService badGlucoseFinderService;
 
     private GlucoseFileService glucoseFileService;
 
@@ -35,11 +33,9 @@ public class TestService {
     private static final String fileBaseName = "Glucose/glucose";
 
     @Autowired
-    public TestService(GlucoseService glucoseService, PredictionService predictionService, LinguisticChainService linguisticChainService, BadGlucoseFinderService badGlucoseFinderService, GlucoseFileService glucoseFileService, FiltersProvider filterProvider, PredictionMatrixFactory predictionMatrixFactory, PersonService personService) {
+    public TestService(GlucoseService glucoseService, LinguisticChainService linguisticChainService, GlucoseFileService glucoseFileService, FiltersProvider filterProvider, PredictionMatrixFactory predictionMatrixFactory, PersonService personService) {
         this.glucoseService = glucoseService;
-        this.predictionService = predictionService;
         this.linguisticChainService = linguisticChainService;
-        this.badGlucoseFinderService = badGlucoseFinderService;
         this.glucoseFileService = glucoseFileService;
         this.filterProvider = filterProvider;
         this.predictionMatrixFactory = predictionMatrixFactory;
@@ -47,7 +43,6 @@ public class TestService {
     }
 
     public void test(int predictionLength, int bufferLength) {
-        List<Prediction> badGlucosePredictions = new ArrayList<>();
         List<GlucoseDataRecord> allFilteredGlucoseRecords = new ArrayList<>();
 
         int lessThanPersons = 0;
@@ -78,8 +73,6 @@ public class TestService {
                 lessThanPersons++;
             } else {
                 log.debug(glucoseMeasuresChain);
-                badGlucosePredictions.addAll(badGlucoseFinderService
-                        .findBadGlucose(glucoseMeasuresChain, predictionLength, bufferLength, i));
             }
         }
         log.debug("Less then persons: {}", lessThanPersons);
@@ -151,12 +144,8 @@ public class TestService {
 
     private double calculateMatchRate(String linguisticChain,
                                       int predictionLength,
-                                      int predictionBuffer,
-                                      List<Prediction> foundPredictions) {
-        List<Prediction> actualPredictions =
-                badGlucoseFinderService.findBadGlucose(linguisticChain, predictionLength, predictionBuffer, 0);
-        log.debug("Found predictions = {}, actual = {}", foundPredictions.size(), actualPredictions.size());
-        return (double) foundPredictions.size() / actualPredictions.size();
+                                      int predictionBuffer) {
+        return -1;
     }
 
     private String seeLeastTen(List<GlucoseDataRecord> records) {

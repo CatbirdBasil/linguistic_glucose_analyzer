@@ -2,6 +2,9 @@ package com.diploma.linguistic_glucose_analyzer.controller;
 
 import com.diploma.linguistic_glucose_analyzer.auth.UserPrincipal;
 import com.diploma.linguistic_glucose_analyzer.service.PredictionService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,10 @@ public class PredictionController {
     @Autowired
     private PredictionService predictionService;
 
+    @ApiOperation(value = "getPossibleFutureGlucose", notes = "Gets possible glucose 30 mins after last record")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK")
+    })
     @GetMapping()
     public ResponseEntity<?> getPossibleFutureGlucose() {
         Object potentialPrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

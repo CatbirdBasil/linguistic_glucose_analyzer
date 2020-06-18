@@ -8,6 +8,9 @@ import com.diploma.linguistic_glucose_analyzer.model.User;
 import com.diploma.linguistic_glucose_analyzer.service.GlucoseFileService;
 import com.diploma.linguistic_glucose_analyzer.service.GlucoseService;
 import com.diploma.linguistic_glucose_analyzer.service.UserService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,23 +38,39 @@ public class GlucoseController {
     @Autowired
     private UserService userService;
 
+    @ApiOperation(value = "getAllGlucoseRecords", notes = "Loads all glucose records list")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK")
+    })
     @GetMapping()
     public ResponseEntity<?> getAllGlucoseRecords() {
         return ResponseEntity.ok(glucoseService.getAll());
     }
 
+    @ApiOperation(value = "getGlucoseRecord", notes = "Gets single glucose record")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<?> getGlucoseRecord(@PathVariable long id) {
         return ResponseEntity.ok(glucoseService.getById(id));
     }
 
+    @ApiOperation(value = "getGlucoseRecordsByPersonId", notes = "Gets all persons glucose records")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK")
+    })
     @GetMapping("/person/{id}")
     public ResponseEntity<?> getGlucoseRecordByPersonId(@PathVariable long id) {
         return ResponseEntity.ok(glucoseService.getRecordsByPerson(id));
     }
 
+    @ApiOperation(value = "getGlucoseRecordsByCurrentUser", notes = "Gets all current user's glucose records")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK")
+    })
     @GetMapping("/user")
-    public ResponseEntity<?> getGlucoseRecordByPersonId() {
+    public ResponseEntity<?> getGlucoseRecordsByCurrentUser() {
         Object potentialPrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (potentialPrincipal instanceof UserPrincipal) {
@@ -61,6 +80,11 @@ public class GlucoseController {
         return ResponseEntity.ok().build();
     }
 
+    @ApiOperation(value = "createGlucoseRecord", notes = "Creates glucose record")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "CREATED"),
+            @ApiResponse(code = 500, message = "Internal server error")
+    })
     @PostMapping
     public ResponseEntity<?> createGlucoseRecord(@Valid @RequestBody GlucoseDataRecord record) {
         Object potentialPrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -73,6 +97,11 @@ public class GlucoseController {
         return ResponseEntity.ok(glucoseService.save(record));
     }
 
+    @ApiOperation(value = "uploadGlucoseRecordsFromFile", notes = "Creates glucose records from uploaded file")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "CREATED"),
+            @ApiResponse(code = 500, message = "Internal server error")
+    })
     @PostMapping("/fileUpload")
     public ResponseEntity<?> uploadGlucoseRecordsFromFile(@RequestParam("file") MultipartFile file) {
         log.debug("Got file: {}", file);
@@ -109,6 +138,11 @@ public class GlucoseController {
         return ResponseEntity.ok().build();
     }
 
+    @ApiOperation(value = "updateGlucoseRecord", notes = "Updates glucose record")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Updated"),
+            @ApiResponse(code = 500, message = "Internal server error")
+    })
     @PutMapping
     public ResponseEntity<?> updateGlucoseRecord(@Valid @RequestBody GlucoseDataRecord record) {
         Object potentialPrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -122,6 +156,11 @@ public class GlucoseController {
         return ResponseEntity.ok().build();
     }
 
+    @ApiOperation(value = "deleteGlucoseRecord", notes = "Deletes glucose record")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Deleted"),
+            @ApiResponse(code = 500, message = "Internal server error")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteGlucoseRecord(@PathVariable long id) {
         glucoseService.deleteById(id);

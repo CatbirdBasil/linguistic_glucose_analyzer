@@ -95,10 +95,17 @@ table{
   font-size: 26px;
   text-align: center;
   color: white;
+  font-weight: 300;
+  padding-top: 10px !important;
 }
 
 .profileLine {
-  font-size: 22px
+  font-size: 22px;
+  font-weight: 300;
+}
+
+.nonRedactableProfileLine {
+  margin-bottom: 13px !important;
 }
 
 .colouredText {
@@ -122,4 +129,13 @@ table{
   // background-color: #62C370 !important;
   // background-color: #2E294E !important;
   vertical-align: bottom;
+}
+
+.text {
+  font-weight: 300;
+}
+
+.paddedButton {
+  padding-left: 2.5rem !important;
+  padding-right: 2.5rem !important;
 }

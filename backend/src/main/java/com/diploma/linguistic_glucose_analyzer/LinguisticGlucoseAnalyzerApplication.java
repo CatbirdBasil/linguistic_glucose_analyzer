@@ -14,6 +14,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -24,7 +29,17 @@ import java.util.TimeZone;
         DataSourceAutoConfiguration.class, //
         DataSourceTransactionManagerAutoConfiguration.class, //
         HibernateJpaAutoConfiguration.class })
+@EnableSwagger2
 public class LinguisticGlucoseAnalyzerApplication {
+
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build();
+    }
 
     @PostConstruct
     void init() {

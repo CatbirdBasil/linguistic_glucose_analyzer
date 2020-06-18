@@ -85,7 +85,7 @@ div {
 
 .greyComment {
   //background-color: #E9DDED;
-  background-color: #F7F7F7;
+  background-color: #9fcbcb15;
 }
 
 .commentSection {
@@ -147,7 +147,8 @@ div {
 }
 
 .table-cell {
-  border: 1px solid lightgrey;
+  border: 1px solid  #9ec9ca;
+  font-weight: 300;
 }
 
 .table-cell-left {
@@ -159,17 +160,18 @@ div {
 }
 
 .table-cell-top {
-  border-bottom: 1px solid lightgrey;
+  border-bottom: 1px solid #9ec9ca;
 }
 
 .table-column-header {
-  border: 1px solid lightgrey;
+  border: 1px solid #9ec9ca;
   //background-color:  lightgrey;
   border-top-width: 2px;
   text-align: center;
   //color: #f58687;
   font-size: 20px;
   padding-top: 12px !important;
+  font-weight: 300;
 }
 
 .table-column-header-left {
@@ -233,13 +235,16 @@ div {
 }
 
 .possibleGlucoseHeaderText {
-  font-size: 21px;
+  font-size: 22px;
   padding-top: 12px !important;
+  font-weight: 300;
+  margin-right: -30px;
 }
 
 .possibleGlucoseText {
   //color: #f58687;
-  font-size: 18px;
+  font-size: 19px;
+  font-weight: 300;
 }
 
 .colouredText {
@@ -254,6 +259,7 @@ div {
   text-align: center;
   font-size: 20px;
   color: darkgrey;
+  font-weight: 300;
 }
 
 
@@ -266,4 +272,20 @@ div {
   border:none;
   margin:0;
   padding:0
+}
+
+.recommendation {
+  font-size: 16px;
+  background-color: #9fcbcb4f;
+  border-radius: 10px;
+  height: 100%;
+  font-weight: 300;
+}
+
+.chartTitle {
+  font-weight: 300;
+  font-size: 22px;
+  text-align: center;
+  padding-bottom: 0;
+  margin-bottom: 0;
 }

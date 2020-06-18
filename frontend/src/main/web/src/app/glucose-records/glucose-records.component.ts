@@ -17,6 +17,7 @@ import {PredictionService} from "../service/prediction-service";
 import {FileUploader} from "ng2-file-upload";
 import {UPLOAD_GLUCOSE_RECORD_FROM_CSV_URL} from "@environments/environment";
 import {HttpResponse} from "@angular/common/http";
+import {el} from "@angular/platform-browser/testing/src/browser_util";
 
 @Component({
   selector: 'app-glucose-records',
@@ -124,6 +125,20 @@ export class GlucoseRecordsComponent implements OnInit {
     return this.loadInfoTemplateByValue(possibleValue.max);
   }
 
+  loadRecommendationTextByValueForPrediction(possibleValue: PossibleGlucoseValue) {
+    if (possibleValue.min <= 70) {
+      return 'Your glucose is too low. Contact your doctor immediately and take some sugar';
+    } else if (possibleValue.min <= 80) {
+      return 'Your glucose is pretty low.  You might need to take more sugar. Measure your glucose more often';
+    } else if (possibleValue.max >= 200) {
+      return 'Your glucose is too high. Contact your doctor immediately and take some additional insulin';
+    } else if (possibleValue.max >= 180) {
+      return 'Your glucose is pretty high. You might need to take more insulin. Measure your glucose more often';
+    } else {
+      return 'Your glucose is just fine. Keep it like that';
+    }
+  }
+
   loadRecordTemplate(record: GlucoseDataRecord) {
     if (this.editedRecord && this.editedRecord.id === record.id) {
       return this.editableRowTemplate;
@@ -141,7 +156,13 @@ export class GlucoseRecordsComponent implements OnInit {
     }();
 
     this.editedRecord.id = 0;
-    this.editedRecord.eventTime = new Date(Date.now());
+
+    if (this.glucoseRecords.length == 0) {
+      this.editedRecord.eventTime = new Date(Date.now());
+    } else {
+      this.editedRecord.eventTime = this.glucoseRecords[0].eventTime;
+    }
+
     this.editedRecord.value = 0;
 
     this.glucoseRecords.unshift(this.editedRecord);
@@ -192,6 +213,7 @@ export class GlucoseRecordsComponent implements OnInit {
           this.onPageRecords.sort((a, b) => b.eventTime.getTime() - a.eventTime.getTime());
           this.glucoseRecords.sort((a, b) => b.eventTime.getTime() - a.eventTime.getTime());
           this.updateChartData();
+          this.loadPrediction();
         },
         err => {
           console.log(err);
@@ -214,6 +236,7 @@ export class GlucoseRecordsComponent implements OnInit {
           this.onPageRecords.sort((a, b) => b.eventTime.getTime() - a.eventTime.getTime());
           this.glucoseRecords.sort((a, b) => b.eventTime.getTime() - a.eventTime.getTime());
           this.updateChartData();
+          this.loadPrediction();
         },
         err => {
           console.log(err);
@@ -248,6 +271,7 @@ export class GlucoseRecordsComponent implements OnInit {
           index = this.onPageRecords.findIndex((x) => x.id == this.recordToDelete.id);
           this.onPageRecords.splice(index, 1);
           this.updateChartData();
+          this.loadPrediction();
         },
         error => console.log(error)
       )
@@ -372,7 +396,7 @@ export class GlucoseRecordsComponent implements OnInit {
       },
       options: {
         title: {
-          display: true,
+          display: false,
           text: 'Glucose measures for last week',
           fontSize: 20
         },
@@ -479,6 +503,7 @@ export class GlucoseRecordsComponent implements OnInit {
                 this.isLoading = false;
 
                 this.initChart();
+                this.loadPrediction();
               }
             )
 
